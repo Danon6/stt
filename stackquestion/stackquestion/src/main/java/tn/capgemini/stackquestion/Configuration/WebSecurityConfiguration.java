@@ -31,9 +31,8 @@ public class WebSecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/authenticate", "/signup","/test").permitAll()
-                        .requestMatchers("/**").permitAll()
-                        //.requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/authenticate", "/signup").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
