@@ -1,4 +1,7 @@
 package tn.capgemini.stackquestion.services.answer;
 
-public interface AnswerService {
+import tn.capgemini.stackquestion.dto.AnswerDto;
+
+public interface AnswerService{
+    AnswerDto postAnswer(AnswerDto answerDto);
 }

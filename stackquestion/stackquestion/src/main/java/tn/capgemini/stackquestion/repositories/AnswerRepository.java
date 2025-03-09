@@ -1,4 +1,12 @@
 package tn.capgemini.stackquestion.repositories;
 
-public interface AnswerRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import tn.capgemini.stackquestion.entities.Answer;
+
+import java.util.List;
+
+@Repository
+public interface AnswerRepository  extends JpaRepository<Answer, Long> {
+    List<Answer> findAllByQuestionId(Long questionId);
 }
