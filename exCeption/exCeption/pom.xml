@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tn.capgemini</groupId>
-	<artifactId>stackquestion</artifactId>
+	<artifactId>exCeption</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>stackquestion</name>
 	<description>rest api for pfe </description>
