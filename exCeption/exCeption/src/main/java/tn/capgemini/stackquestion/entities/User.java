@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.entities;
+package tn.capgemini.exCeption.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,11 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import tn.capgemini.stackquestion.dto.UserDTO;
-import tn.capgemini.stackquestion.entities.enums.typeUser;
+import tn.capgemini.exCeption.dto.UserDTO;
+import tn.capgemini.exCeption.entities.enums.typeUser;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

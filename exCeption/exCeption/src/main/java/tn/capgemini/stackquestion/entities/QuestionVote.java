@@ -1,11 +1,11 @@
-package tn.capgemini.stackquestion.entities;
+package tn.capgemini.exCeption.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import tn.capgemini.stackquestion.entities.enums.VoteType;
+import tn.capgemini.exCeption.entities.enums.VoteType;
 
 @Data
 @Entity

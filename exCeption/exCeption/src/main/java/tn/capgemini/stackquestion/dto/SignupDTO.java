@@ -1,7 +1,7 @@
-package tn.capgemini.stackquestion.dto;
+package tn.capgemini.exCeption.dto;
 
 import lombok.Data;
-import tn.capgemini.stackquestion.entities.enums.typeUser;
+import tn.capgemini.exCeption.entities.enums.typeUser;
 
 import java.util.Date;
 

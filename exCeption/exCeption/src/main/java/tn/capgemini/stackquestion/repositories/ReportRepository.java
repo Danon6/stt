@@ -1,7 +1,7 @@
-package tn.capgemini.stackquestion.repositories;
+package tn.capgemini.exCeption.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tn.capgemini.stackquestion.entities.Report;
+import tn.capgemini.exCeption.entities.Report;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 }

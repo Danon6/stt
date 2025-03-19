@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion;
+package tn.capgemini.exCeption;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.entities;
+package tn.capgemini.exCeption.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import tn.capgemini.stackquestion.dto.AnswerDto;
+import tn.capgemini.exCeption.dto.AnswerDto;
 
 import java.util.Date;
 

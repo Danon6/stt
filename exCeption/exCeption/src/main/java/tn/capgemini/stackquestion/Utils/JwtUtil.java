@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.Utils;
+package tn.capgemini.exCeption.Utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;

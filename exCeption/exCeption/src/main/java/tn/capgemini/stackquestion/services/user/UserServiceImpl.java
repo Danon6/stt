@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.services.user;
+package tn.capgemini.exCeption.services.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -6,11 +6,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tn.capgemini.stackquestion.dto.SignupDTO;
-import tn.capgemini.stackquestion.dto.UserDTO;
-import tn.capgemini.stackquestion.entities.User;
-import tn.capgemini.stackquestion.entities.enums.typeUser;
-import tn.capgemini.stackquestion.repositories.UserRepository;
+import tn.capgemini.exCeption.dto.SignupDTO;
+import tn.capgemini.exCeption.dto.UserDTO;
+import tn.capgemini.exCeption.entities.User;
+import tn.capgemini.exCeption.entities.enums.typeUser;
+import tn.capgemini.exCeption.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,9 @@
-package tn.capgemini.stackquestion.dto;
+package tn.capgemini.exCeption.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tn.capgemini.stackquestion.entities.Image;
+import tn.capgemini.exCeption.entities.Image;
 
 import java.util.Date;
 

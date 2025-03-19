@@ -1,14 +1,14 @@
-package tn.capgemini.stackquestion.services.user.image;
+package tn.capgemini.exCeption.services.user.image;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import tn.capgemini.stackquestion.entities.Answer;
-import tn.capgemini.stackquestion.entities.Image;
-import tn.capgemini.stackquestion.repositories.AnswerRepository;
-import tn.capgemini.stackquestion.repositories.ImageRepository;
+import tn.capgemini.exCeption.entities.Answer;
+import tn.capgemini.exCeption.entities.Image;
+import tn.capgemini.exCeption.repositories.AnswerRepository;
+import tn.capgemini.exCeption.repositories.ImageRepository;
 
 import java.io.IOException;
 import java.util.Objects;

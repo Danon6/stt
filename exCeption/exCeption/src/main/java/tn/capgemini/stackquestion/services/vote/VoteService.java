@@ -1,6 +1,6 @@
-package tn.capgemini.stackquestion.services.vote;
+package tn.capgemini.exCeption.services.vote;
 
-import tn.capgemini.stackquestion.dto.QuestionVoteDto;
+import tn.capgemini.exCeption.dto.QuestionVoteDto;
 
 public interface VoteService {
     QuestionVoteDto addVoteToQuestion(QuestionVoteDto questionVoteDto);

@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.entities;
+package tn.capgemini.exCeption.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

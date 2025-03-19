@@ -1,12 +1,12 @@
-package tn.capgemini.stackquestion.services.jwt;
+package tn.capgemini.exCeption.services.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import tn.capgemini.stackquestion.entities.User;
-import tn.capgemini.stackquestion.repositories.UserRepository;
+import tn.capgemini.exCeption.entities.User;
+import tn.capgemini.exCeption.repositories.UserRepository;
 
 import java.util.ArrayList;
 

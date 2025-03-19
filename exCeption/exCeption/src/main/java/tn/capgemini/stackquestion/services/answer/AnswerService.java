@@ -1,6 +1,6 @@
-package tn.capgemini.stackquestion.services.answer;
+package tn.capgemini.exCeption.services.answer;
 
-import tn.capgemini.stackquestion.dto.AnswerDto;
+import tn.capgemini.exCeption.dto.AnswerDto;
 
 public interface AnswerService{
     AnswerDto postAnswer(AnswerDto answerDto);

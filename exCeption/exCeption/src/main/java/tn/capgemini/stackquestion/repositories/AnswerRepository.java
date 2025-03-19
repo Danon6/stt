@@ -1,8 +1,8 @@
-package tn.capgemini.stackquestion.repositories;
+package tn.capgemini.exCeption.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tn.capgemini.stackquestion.entities.Answer;
+import tn.capgemini.exCeption.entities.Answer;
 
 import java.util.List;
 

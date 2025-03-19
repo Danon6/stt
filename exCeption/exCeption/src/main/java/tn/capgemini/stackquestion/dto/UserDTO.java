@@ -1,12 +1,11 @@
-package tn.capgemini.stackquestion.dto;
+package tn.capgemini.exCeption.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import tn.capgemini.stackquestion.entities.User;
-import tn.capgemini.stackquestion.entities.enums.typeUser;
+import tn.capgemini.exCeption.entities.enums.typeUser;
 
 import java.util.Date;
 

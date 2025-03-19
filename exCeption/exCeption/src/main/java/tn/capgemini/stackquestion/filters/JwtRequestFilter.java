@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.filters;
+package tn.capgemini.exCeption.filters;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tn.capgemini.stackquestion.Utils.JwtUtil;
-import tn.capgemini.stackquestion.services.jwt.UserDetailsServiceImpl;
+import tn.capgemini.exCeption.Utils.JwtUtil;
+import tn.capgemini.exCeption.services.jwt.UserDetailsServiceImpl;
 
 import java.io.IOException;
 

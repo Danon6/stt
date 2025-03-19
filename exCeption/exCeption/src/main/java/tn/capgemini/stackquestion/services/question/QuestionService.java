@@ -1,8 +1,8 @@
-package tn.capgemini.stackquestion.services.question;
+package tn.capgemini.exCeption.services.question;
 
-import tn.capgemini.stackquestion.dto.AllQuestionResponseDto;
-import tn.capgemini.stackquestion.dto.QuestionDTO;
-import tn.capgemini.stackquestion.dto.SingleQuestionDto;
+import tn.capgemini.exCeption.dto.AllQuestionResponseDto;
+import tn.capgemini.exCeption.dto.QuestionDTO;
+import tn.capgemini.exCeption.dto.SingleQuestionDto;
 
 public interface QuestionService {
     QuestionDTO addQuestion(QuestionDTO questionDto);

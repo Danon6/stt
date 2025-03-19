@@ -1,16 +1,15 @@
-package tn.capgemini.stackquestion.controllers;
+package tn.capgemini.exCeption.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import tn.capgemini.stackquestion.dto.AllQuestionResponseDto;
-import tn.capgemini.stackquestion.dto.QuestionDTO;
-import tn.capgemini.stackquestion.dto.SingleQuestionDto;
-import tn.capgemini.stackquestion.services.question.QuestionService;
+import tn.capgemini.exCeption.dto.AllQuestionResponseDto;
+import tn.capgemini.exCeption.dto.QuestionDTO;
+import tn.capgemini.exCeption.dto.SingleQuestionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.capgemini.stackquestion.services.question.QuestionServiceImpl;
+import tn.capgemini.exCeption.services.question.QuestionServiceImpl;
 
 @RestController
 @RequestMapping("/api/question")

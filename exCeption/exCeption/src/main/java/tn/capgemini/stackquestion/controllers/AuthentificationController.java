@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.controllers;
+package tn.capgemini.exCeption.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import tn.capgemini.stackquestion.Utils.JwtUtil;
-import tn.capgemini.stackquestion.dto.AuthentificationRequest;
-import tn.capgemini.stackquestion.dto.AuthentificationResponse;
-import tn.capgemini.stackquestion.entities.User;
-import tn.capgemini.stackquestion.repositories.UserRepository;
-import tn.capgemini.stackquestion.services.user.UserService;
+import tn.capgemini.exCeption.Utils.JwtUtil;
+import tn.capgemini.exCeption.dto.AuthentificationRequest;
+import tn.capgemini.exCeption.dto.AuthentificationResponse;
+import tn.capgemini.exCeption.entities.User;
+import tn.capgemini.exCeption.repositories.UserRepository;
+import tn.capgemini.exCeption.services.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

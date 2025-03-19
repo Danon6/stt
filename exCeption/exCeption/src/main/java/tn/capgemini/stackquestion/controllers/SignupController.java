@@ -1,12 +1,11 @@
-package tn.capgemini.stackquestion.controllers;
+package tn.capgemini.exCeption.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.capgemini.stackquestion.dto.SignupDTO;
-import tn.capgemini.stackquestion.dto.UserDTO;
-import tn.capgemini.stackquestion.services.user.UserService;
-import tn.capgemini.stackquestion.services.user.UserServiceImpl;
+import tn.capgemini.exCeption.dto.SignupDTO;
+import tn.capgemini.exCeption.dto.UserDTO;
+import tn.capgemini.exCeption.services.user.UserServiceImpl;
 @CrossOrigin(origins = "*")
 
 @RestController

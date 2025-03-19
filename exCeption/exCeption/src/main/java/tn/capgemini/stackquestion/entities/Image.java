@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.entities;
+package tn.capgemini.exCeption.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

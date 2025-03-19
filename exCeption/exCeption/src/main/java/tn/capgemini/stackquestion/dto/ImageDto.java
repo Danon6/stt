@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.dto;
+package tn.capgemini.exCeption.dto;
 
 import lombok.Data;
 

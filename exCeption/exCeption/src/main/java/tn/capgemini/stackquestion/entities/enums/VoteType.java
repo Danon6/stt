@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.entities.enums;
+package tn.capgemini.exCeption.entities.enums;
 
 public enum VoteType {
     DOWNVOTE(-1),

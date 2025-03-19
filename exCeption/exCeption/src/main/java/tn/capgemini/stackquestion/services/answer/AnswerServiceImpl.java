@@ -1,16 +1,16 @@
-package tn.capgemini.stackquestion.services.answer;
+package tn.capgemini.exCeption.services.answer;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.capgemini.stackquestion.dto.AnswerDto;
-import tn.capgemini.stackquestion.entities.Answer;
-import tn.capgemini.stackquestion.entities.Question;
-import tn.capgemini.stackquestion.entities.User;
-import tn.capgemini.stackquestion.repositories.AnswerRepository;
-import tn.capgemini.stackquestion.repositories.QuestionRepository;
-import tn.capgemini.stackquestion.repositories.UserRepository;
+import tn.capgemini.exCeption.dto.AnswerDto;
+import tn.capgemini.exCeption.entities.Answer;
+import tn.capgemini.exCeption.entities.Question;
+import tn.capgemini.exCeption.entities.User;
+import tn.capgemini.exCeption.repositories.AnswerRepository;
+import tn.capgemini.exCeption.repositories.QuestionRepository;
+import tn.capgemini.exCeption.repositories.UserRepository;
 
 import java.util.Date;
 import java.util.Optional;

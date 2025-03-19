@@ -1,7 +1,7 @@
-package tn.capgemini.stackquestion.dto;
+package tn.capgemini.exCeption.dto;
 
 import lombok.Data;
-import tn.capgemini.stackquestion.entities.enums.VoteType;
+import tn.capgemini.exCeption.entities.enums.VoteType;
 
 @Data
 public class QuestionVoteDto {

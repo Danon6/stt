@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.controllers;
+package tn.capgemini.exCeption.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tn.capgemini.stackquestion.services.user.image.ImageService;
+import tn.capgemini.exCeption.services.user.image.ImageService;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.services.user.image;
+package tn.capgemini.exCeption.services.user.image;
 
 import org.springframework.web.multipart.MultipartFile;
 

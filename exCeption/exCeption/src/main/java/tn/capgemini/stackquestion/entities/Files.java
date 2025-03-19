@@ -1,9 +1,9 @@
-package tn.capgemini.stackquestion.entities;
+package tn.capgemini.exCeption.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tn.capgemini.stackquestion.entities.enums.typeFile;
+import tn.capgemini.exCeption.entities.enums.typeFile;
 
 @Entity
 @Data

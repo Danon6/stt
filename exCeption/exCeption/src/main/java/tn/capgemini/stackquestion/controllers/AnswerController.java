@@ -1,15 +1,12 @@
-package tn.capgemini.stackquestion.controllers;
+package tn.capgemini.exCeption.controllers;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.capgemini.stackquestion.dto.AnswerDto;
-import tn.capgemini.stackquestion.repositories.AnswerRepository;
-import tn.capgemini.stackquestion.services.answer.AnswerService;
-import tn.capgemini.stackquestion.services.answer.AnswerServiceImpl;
+import tn.capgemini.exCeption.dto.AnswerDto;
+import tn.capgemini.exCeption.repositories.AnswerRepository;
+import tn.capgemini.exCeption.services.answer.AnswerServiceImpl;
 
 @CrossOrigin(origins = "*")
 

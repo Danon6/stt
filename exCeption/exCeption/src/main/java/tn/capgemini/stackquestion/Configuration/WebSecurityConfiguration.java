@@ -1,4 +1,4 @@
-package tn.capgemini.stackquestion.Configuration;
+package tn.capgemini.exCeption.Configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import tn.capgemini.stackquestion.filters.JwtRequestFilter;
+import tn.capgemini.exCeption.filters.JwtRequestFilter;
 
 
 
