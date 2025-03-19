@@ -1,7 +1,7 @@
-package tn.capgemini.exCeption.repositories;
+package tn.capgemini.stackquestion.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tn.capgemini.exCeption.entities.Comment;
+import tn.capgemini.stackquestion.entities.Comment;
 
-public interface CommentRepository  extends JpaRepository<Comment, Long> {
+public interface CommentRepository  extends JpaRepository<Comment, Integer> {
 }

@@ -1,15 +1,15 @@
-package tn.capgemini.exCeption.dto;
+package tn.capgemini.stackquestion.dto;
 
 import lombok.Data;
-import tn.capgemini.exCeption.entities.enums.VoteType;
+import tn.capgemini.stackquestion.entities.enums.VoteType;
 
 @Data
 public class QuestionVoteDto {
-    private Long id;
+    private int id;
 
     private VoteType voteType;
 
-    private Long userId;
+    private int userId;
 
-    private Long questionId;
+    private int questionId;
 }

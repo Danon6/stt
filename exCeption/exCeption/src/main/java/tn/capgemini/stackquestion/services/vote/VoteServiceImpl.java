@@ -1,15 +1,15 @@
-package tn.capgemini.exCeption.services.vote;
+package tn.capgemini.stackquestion.services.vote;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.capgemini.exCeption.dto.QuestionVoteDto;
-import tn.capgemini.exCeption.entities.Question;
-import tn.capgemini.exCeption.entities.QuestionVote;
-import tn.capgemini.exCeption.entities.User;
-import tn.capgemini.exCeption.entities.enums.VoteType;
-import tn.capgemini.exCeption.repositories.QuestionRepository;
-import tn.capgemini.exCeption.repositories.QuestionVoteRepository;
-import tn.capgemini.exCeption.repositories.UserRepository;
+import tn.capgemini.stackquestion.dto.QuestionVoteDto;
+import tn.capgemini.stackquestion.entities.Question;
+import tn.capgemini.stackquestion.entities.QuestionVote;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.enums.VoteType;
+import tn.capgemini.stackquestion.repositories.QuestionRepository;
+import tn.capgemini.stackquestion.repositories.QuestionVoteRepository;
+import tn.capgemini.stackquestion.repositories.UserRepository;
 
 import java.util.Optional;
 

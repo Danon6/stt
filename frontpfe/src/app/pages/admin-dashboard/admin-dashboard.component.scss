@@ -1,0 +1,48 @@
+/* 🌟 Conteneur principal de l'admin */
+.admin-container {
+    padding: 20px;
+    background-color: #dceaf8; /* ✅ Background bleu */
+    text-align: center;
+    min-height: 100vh; /* ✅ Prend toute la hauteur */
+}
+
+/* 🌟 Titre */
+.title {
+    color: #007bff; /* ✅ Texte en bleu */
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 🌟 Menu Admin */
+.admin-menu {
+    display: flex;
+    justify-content: center; /* ✅ Centre le bouton */
+    margin-bottom: 20px;
+}
+
+/* 🌟 Bouton User Management (comme Log Out) */
+.admin-menu button {
+    background-color: white; /* ✅ Blanc par défaut */
+    color: #007bff; /* ✅ Texte en bleu */
+    border: 2px solid #007bff; /* ✅ Bordure bleue */
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* 🌟 Effet au survol */
+.admin-menu button:hover {
+    background-color: #007bff; /* ✅ Devient bleu */
+    color: white; /* ✅ Texte blanc */
+}
+
+/* 🌟 Effet pour le bouton actif */
+.admin-menu .active {
+    border: 2px solid #007bff; /* ✅ Bordure bleue */
+    background-color: white; /* ✅ Fond blanc */
+    font-weight: bold;
+}

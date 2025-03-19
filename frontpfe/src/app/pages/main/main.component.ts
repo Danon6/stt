@@ -1,20 +1,12 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { MainNavbarComponent } from '../../components/main-navbar/main-navbar.component';
+import { CommonModule } from '@angular/common'; // ✅ Importer CommonModule
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
   standalone: true,
-  imports :[FormsModule,NavbarComponent]
-
+  imports: [CommonModule, MainNavbarComponent] // ✅ Ajouter CommonModule pour `*ngIf`
 })
-export class MainComponent {
-  constructor(private authService: AuthService) {}
-
-  logout() {
-    this.authService.logout();
-  }
-}
+export class MainComponent { }

@@ -4,11 +4,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router'; // ✅ Ajout de RouterModule
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(HttpClientModule, FormsModule),
+    importProvidersFrom(HttpClientModule, FormsModule,RouterModule),
     provideHttpClient() // ✅ Ensures HTTP client is available
     // ✅ Provide HttpClientModule globally
   ]

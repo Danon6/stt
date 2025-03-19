@@ -1,7 +1,7 @@
-package tn.capgemini.exCeption.dto;
+package tn.capgemini.stackquestion.dto;
 
 import lombok.Data;
-import tn.capgemini.exCeption.entities.enums.typeUser;
+import tn.capgemini.stackquestion.entities.enums.typeUser;
 
 @Data
 public class AuthentificationResponse {

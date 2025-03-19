@@ -1,0 +1,60 @@
+<div class="user-container">
+    <!-- Barre de recherche avec une meilleure visibilité -->
+    <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="Chercher..." class="search-input">
+    </div>
+
+    <!-- Tableau des utilisateurs -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Birthday Date</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th></th> <!-- ✅ Colonne pour les icônes -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of filteredUsers">
+                    <td><strong>{{ user.userId }}</strong></td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.dateNaissance }}</td>
+                    <td>{{ user.createdAt }}</td>
+                    <td>{{ user.updatedAt }}</td>
+                    <td class="actions">
+                        <button class="edit-btn" (click)="editUser(user)"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn" (click)="deleteUser(user.userId)"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulaire de modification -->
+    <div class="edit-form-container" *ngIf="showEditForm">
+        <h3>Modifier l'utilisateur</h3>
+        <label>Nom :</label>
+        <input type="text" [(ngModel)]="editedUser.name">
+
+        <label>E-mail :</label>
+        <input type="email" [(ngModel)]="editedUser.email">
+
+        <label>Numéro de téléphone :</label>
+        <input type="text" [(ngModel)]="editedUser.phone">
+
+        <label>Date de naissance :</label>
+        <input type="date" [(ngModel)]="editedUser.dateNaissance">
+
+        <div class="edit-buttons">
+            <button (click)="saveChanges()" class="save-btn">Enregistrer</button>
+            <button (click)="cancelEdit()" class="cancel-btn">Annuler</button>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,9 @@
-package tn.capgemini.exCeption.dto;
+package tn.capgemini.stackquestion.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tn.capgemini.exCeption.entities.Image;
+import tn.capgemini.stackquestion.entities.Image;
 
 import java.util.Date;
 
@@ -12,13 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class AnswerDto {
 
-    private Long id;
+    private int id;
 
     private String body;
 
     private Date createdDate;
 
-    private  Long questionId;
+    private  int questionId;
 
     private Long userId;
 

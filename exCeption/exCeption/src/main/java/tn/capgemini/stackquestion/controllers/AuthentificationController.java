@@ -1,4 +1,4 @@
-package tn.capgemini.exCeption.controllers;
+package tn.capgemini.stackquestion.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import tn.capgemini.exCeption.Utils.JwtUtil;
-import tn.capgemini.exCeption.dto.AuthentificationRequest;
-import tn.capgemini.exCeption.dto.AuthentificationResponse;
-import tn.capgemini.exCeption.entities.User;
-import tn.capgemini.exCeption.repositories.UserRepository;
-import tn.capgemini.exCeption.services.user.UserService;
+import tn.capgemini.stackquestion.Utils.JwtUtil;
+import tn.capgemini.stackquestion.dto.AuthentificationRequest;
+import tn.capgemini.stackquestion.dto.AuthentificationResponse;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.repositories.UserRepository;
+import tn.capgemini.stackquestion.services.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 import java.io.IOException;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 
@@ -57,9 +58,9 @@ public class AuthentificationController {
             return null;
         }
         final UserDetails userDetails= UserDetailsService.loadUserByUsername(authentificationRequest.getEmail());
-        User user =userRepository.findFirstByEmail(authentificationRequest.getEmail());
-        final String jwt = jwtUtil.generateToken(user.getEmail());
-        return new AuthentificationResponse(jwt,user.getTypeUser());
+        Optional<User> user =userRepository.findFirstByEmail(authentificationRequest.getEmail());
+        final String jwt = jwtUtil.generateToken(user.get().getEmail());
+        return new AuthentificationResponse(jwt,user.get().getTypeUser());
 
     }
 }

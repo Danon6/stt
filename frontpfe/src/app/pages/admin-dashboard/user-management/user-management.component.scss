@@ -1,0 +1,93 @@
+/* 🌟 Conteneur principal */
+.user-container {
+    background-color: #cddeff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 1050px; /* ✅ Légèrement plus large pour bien afficher toutes les colonnes */
+    margin: 0 auto;
+}
+
+/* 🌟 Barre de recherche améliorée */
+.search-container {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.search-input {
+    width: 95%;
+    padding: 10px;
+    border: 2px solid #007bff; /* ✅ Ajoute une bordure bleue */
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* 🌟 Conteneur du tableau */
+.table-container {
+    overflow-x: auto;
+}
+
+/* 🌟 Tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: white;
+    color:#007bff ;
+}
+
+
+/* 🌟 Ajustement de la colonne Actions */
+td:last-child {
+    text-align: center;
+    width: 80px; /* ✅ Ajustement de l’espace pour les icônes */
+}
+
+/* 🌟 Icônes d'actions */
+.actions {
+    text-align: center;
+}
+
+.edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.edit-btn {
+    color: #6c757d;
+}
+
+.edit-btn:hover {
+    color: #007bff;
+}
+
+.delete-btn {
+    color: #dc3545;
+}
+
+.delete-btn:hover {
+    color: darkred;
+}

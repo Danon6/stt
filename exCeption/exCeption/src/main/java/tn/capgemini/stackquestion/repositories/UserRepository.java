@@ -1,7 +1,7 @@
-package tn.capgemini.exCeption.repositories;
+package tn.capgemini.stackquestion.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tn.capgemini.exCeption.entities.User;
+import tn.capgemini.stackquestion.entities.User;
 
 import java.util.Optional;
 

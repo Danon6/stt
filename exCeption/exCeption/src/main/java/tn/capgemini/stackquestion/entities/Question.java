@@ -1,11 +1,11 @@
-package tn.capgemini.exCeption.entities;
+package tn.capgemini.stackquestion.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import tn.capgemini.exCeption.dto.QuestionDTO;
+import tn.capgemini.stackquestion.dto.QuestionDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String title;
 
     @Lob
@@ -45,7 +45,7 @@ public class Question {
         questionDTO.setTitle(title);
         questionDTO.setBody(body);
         questionDTO.setCreatedDate(createdDate);
-        questionDTO.setUserId(Long.valueOf(user.getUser_id()));
+        questionDTO.setUserId(user.getUser_id());
         questionDTO.setTags(tags);
         questionDTO.setVoteCount(voteCount);
         questionDTO.setUsername(user.getName());

@@ -1,11 +1,12 @@
-package tn.capgemini.exCeption.dto;
+package tn.capgemini.stackquestion.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import tn.capgemini.exCeption.entities.enums.typeUser;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.enums.typeUser;
 
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public class UserDTO {
     private String phone;
     private Date date;
     private typeUser typeUser;
+    private String password;
     private Integer departementId;  // On stocke l'ID au lieu de l'objet entier+
     @CreationTimestamp
     private Date createdAt;

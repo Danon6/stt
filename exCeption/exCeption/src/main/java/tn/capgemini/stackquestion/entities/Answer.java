@@ -1,4 +1,4 @@
-package tn.capgemini.exCeption.entities;
+package tn.capgemini.stackquestion.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import tn.capgemini.exCeption.dto.AnswerDto;
+import tn.capgemini.stackquestion.dto.AnswerDto;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Lob
     @Column(name = "body", length = 512)

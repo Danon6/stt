@@ -1,11 +1,11 @@
-package tn.capgemini.exCeption.entities;
+package tn.capgemini.stackquestion.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import tn.capgemini.exCeption.entities.enums.VoteType;
+import tn.capgemini.stackquestion.entities.enums.VoteType;
 
 @Data
 @Entity
@@ -13,7 +13,7 @@ public class QuestionVote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private VoteType voteType;
 

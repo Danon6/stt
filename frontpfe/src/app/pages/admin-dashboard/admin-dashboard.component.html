@@ -1,0 +1,13 @@
+<app-navbar></app-navbar>
+
+<div class="admin-container">
+    <h1 class="title">Admin Dashboard</h1>
+
+    <!-- Bouton User Management qui affiche ou masque la liste des utilisateurs -->
+    <nav class="admin-menu">
+        <button (click)="toggleUserManagement()" class="active">User Management</button>
+    </nav>
+
+    <!-- Affichage conditionnel de User Management -->
+    <app-user-management *ngIf="showUserManagement"></app-user-management>
+</div>

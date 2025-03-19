@@ -1,4 +1,4 @@
-package tn.capgemini.exCeption.services.user;
+package tn.capgemini.stackquestion.services.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -6,11 +6,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tn.capgemini.exCeption.dto.SignupDTO;
-import tn.capgemini.exCeption.dto.UserDTO;
-import tn.capgemini.exCeption.entities.User;
-import tn.capgemini.exCeption.entities.enums.typeUser;
-import tn.capgemini.exCeption.repositories.UserRepository;
+import tn.capgemini.stackquestion.dto.SignupDTO;
+import tn.capgemini.stackquestion.dto.UserDTO;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.enums.typeUser;
+import tn.capgemini.stackquestion.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    // this is for register user
     public UserDTO createUser(SignupDTO signupDTO) {
         // Vérifier si l'email se termine bien par "@capgemini.tn"
         if (!signupDTO.getEmail().toLowerCase().endsWith("@capgemini.tn")) {
@@ -49,7 +50,24 @@ public class UserServiceImpl implements UserService {
         return user.mapUserToUserDTO();
     }
 
-
+    @Override
+    @Transactional
+    //this is for the admin to add user manually
+    public UserDTO addUser(UserDTO userDTO) {
+        // Vérifier si l'email se termine bien par "@capgemini.tn"
+        if (!userDTO.getEmail().toLowerCase().endsWith("@capgemini.tn")) {
+            throw new RuntimeException("Adresse email invalide : seuls les emails @capgemini.tn sont autorisés !");
+        }
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhone(userDTO.getPhone());
+        user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        user.setDateNaissance(userDTO.getDate());
+        user.setTypeUser(userDTO.getTypeUser());
+        User res =  userRepository.save(user);
+        return res.mapUserToUserDTO();
+    }
     @Override
     public List<UserDTO> getAllUsers() {
         User adminUser = getAuthenticatedUser();
@@ -83,7 +101,9 @@ public class UserServiceImpl implements UserService {
             user.setEmail(signupDTO.getEmail());
             user.setPhone(signupDTO.getPhone());
             user.setDateNaissance(signupDTO.getDate());
-            user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));
+            if (signupDTO.getPassword() != null && !signupDTO.getPassword().isEmpty()) {
+                user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));
+            }
             userRepository.save(user);
             return user.mapUserToUserDTO();
         }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));

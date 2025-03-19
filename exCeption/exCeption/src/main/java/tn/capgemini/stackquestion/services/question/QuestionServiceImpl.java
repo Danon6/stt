@@ -1,4 +1,4 @@
-package tn.capgemini.exCeption.services.question;
+package tn.capgemini.stackquestion.services.question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -6,19 +6,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import tn.capgemini.exCeption.dto.AllQuestionResponseDto;
-import tn.capgemini.exCeption.dto.AnswerDto;
-import tn.capgemini.exCeption.dto.QuestionDTO;
-import tn.capgemini.exCeption.dto.SingleQuestionDto;
-import tn.capgemini.exCeption.entities.Answer;
-import tn.capgemini.exCeption.entities.Question;
-import tn.capgemini.exCeption.entities.QuestionVote;
-import tn.capgemini.exCeption.entities.User;
-import tn.capgemini.exCeption.entities.enums.VoteType;
-import tn.capgemini.exCeption.repositories.AnswerRepository;
-import tn.capgemini.exCeption.repositories.ImageRepository;
-import tn.capgemini.exCeption.repositories.QuestionRepository;
-import tn.capgemini.exCeption.repositories.UserRepository;
+import tn.capgemini.stackquestion.dto.AllQuestionResponseDto;
+import tn.capgemini.stackquestion.dto.AnswerDto;
+import tn.capgemini.stackquestion.dto.QuestionDTO;
+import tn.capgemini.stackquestion.dto.SingleQuestionDto;
+import tn.capgemini.stackquestion.entities.Answer;
+import tn.capgemini.stackquestion.entities.Question;
+import tn.capgemini.stackquestion.entities.QuestionVote;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.enums.VoteType;
+import tn.capgemini.stackquestion.repositories.AnswerRepository;
+import tn.capgemini.stackquestion.repositories.ImageRepository;
+import tn.capgemini.stackquestion.repositories.QuestionRepository;
+import tn.capgemini.stackquestion.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,7 +81,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public SingleQuestionDto getQuestionById(Long userId, Long questionId) {
+    public SingleQuestionDto getQuestionById(int userId, int questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
 
         if(optionalQuestion.isPresent()){
@@ -120,7 +120,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public AllQuestionResponseDto getAllQuestionsByUserId(Long userId, int pageNumber) {
+    public AllQuestionResponseDto getAllQuestionsByUserId(int userId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, SEARCH_RESULT_PER_PAGE);
         Page<Question> questionsPage =  questionRepository.findAllByUser(userId, paging);
 

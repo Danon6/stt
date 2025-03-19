@@ -1,4 +1,4 @@
-package tn.capgemini.exCeption.entities;
+package tn.capgemini.stackquestion.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -15,7 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
 

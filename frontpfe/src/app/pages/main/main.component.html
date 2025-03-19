@@ -1,4 +1,82 @@
-<app-navbar></app-navbar>
+<app-main-navbar></app-main-navbar>
 
-<h1>Welcome to the Main Page</h1>
-<button (click)="logout()">Logout</button>
+<!-- Conteneur principal -->
+<div class="main-container">
+
+  <!-- Barre latérale -->
+  <aside class="sidebar">
+    <nav>
+      <!-- Section supérieure : Home & Trending Up -->
+      <ul class="top-menu">
+        <li>
+          <a href="#" class="highlight flex items-center">
+            <span class="icon material-icons">Home</span>
+            <img 
+              src="home-button.png" 
+              alt="Home"
+              class="h-10 w-10 rounded-full animate-fadeIn mr-2"
+            >
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="highlight flex items-center">
+            <span class="icon material-icons">Trending_up</span>
+            <img 
+            src="up-arrow.png" 
+            alt="Trending Up"
+            class="h-10 w-10 rounded-full animate-fadeIn mr-2"
+          >
+          </a>
+        </li>
+      </ul>
+
+      <!-- Ligne de séparation -->
+      <hr class="sidebar-divider" />
+
+      <!-- Section inférieure : Questions, Tags, Users, Companies -->
+      <ul class="bottom-menu">
+        <li>
+            <a href="#" class="highlight flex items-center">
+              <span class="icon material-icons">Questions</span>
+              <img 
+                src="inquiry.png" 
+                alt="Questions"
+                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
+              >
+            </a>
+          </li>
+          <li>
+            <a href="#" class="highlight flex items-center">
+              <span class="icon material-icons">Tags </span>
+              <img 
+                src="tag.png" 
+                alt="Tags"
+                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
+              >
+            </a>
+          </li>
+          <li>
+            <a href="#" class="highlight flex items-center">
+              <span class="icon material-icons">Users </span>
+              <img 
+                src="profile.png" 
+                alt="Users"
+                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
+              >
+            </a>
+          </li>
+          <li>
+            <a href="#" class="highlight flex items-center">
+              <span class="icon material-icons">Companies </span>
+              <img 
+                src="building.png" 
+                alt="Companies"
+                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
+              >
+            </a>
+          </li>
+      </ul>
+    </nav>
+  </aside>
+</div>

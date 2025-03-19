@@ -1,16 +1,16 @@
-package tn.capgemini.exCeption.services.answer;
+package tn.capgemini.stackquestion.services.answer;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.capgemini.exCeption.dto.AnswerDto;
-import tn.capgemini.exCeption.entities.Answer;
-import tn.capgemini.exCeption.entities.Question;
-import tn.capgemini.exCeption.entities.User;
-import tn.capgemini.exCeption.repositories.AnswerRepository;
-import tn.capgemini.exCeption.repositories.QuestionRepository;
-import tn.capgemini.exCeption.repositories.UserRepository;
+import tn.capgemini.stackquestion.dto.AnswerDto;
+import tn.capgemini.stackquestion.entities.Answer;
+import tn.capgemini.stackquestion.entities.Question;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.repositories.AnswerRepository;
+import tn.capgemini.stackquestion.repositories.QuestionRepository;
+import tn.capgemini.stackquestion.repositories.UserRepository;
 
 import java.util.Date;
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public AnswerDto postAnswer(AnswerDto answerDto) {
-        Optional<User> optionalUser = userRepository.findById(answerDto.getUserId());
+        Optional<User> optionalUser = userRepository.findById(Math.toIntExact(answerDto.getUserId()));
         Optional<Question> optionalQuestion = questionRepository.findById(answerDto.getQuestionId());
         if (optionalUser.isPresent() && optionalQuestion.isPresent()){
             Answer answer = new Answer();

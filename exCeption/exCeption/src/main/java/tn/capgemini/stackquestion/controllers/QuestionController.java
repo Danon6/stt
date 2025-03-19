@@ -1,15 +1,16 @@
-package tn.capgemini.exCeption.controllers;
+package tn.capgemini.stackquestion.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import tn.capgemini.exCeption.dto.AllQuestionResponseDto;
-import tn.capgemini.exCeption.dto.QuestionDTO;
-import tn.capgemini.exCeption.dto.SingleQuestionDto;
+import tn.capgemini.stackquestion.dto.AllQuestionResponseDto;
+import tn.capgemini.stackquestion.dto.QuestionDTO;
+import tn.capgemini.stackquestion.dto.SingleQuestionDto;
+import tn.capgemini.stackquestion.services.question.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.capgemini.exCeption.services.question.QuestionServiceImpl;
+import tn.capgemini.stackquestion.services.question.QuestionServiceImpl;
 
 @RestController
 @RequestMapping("/api/question")
@@ -35,7 +36,7 @@ class QuestionController {
     }
 
     @GetMapping("/{userId}/{questionId}")
-    public ResponseEntity<?> getQuestionById(@PathVariable Long userId , @PathVariable Long questionId){
+    public ResponseEntity<?> getQuestionById(@PathVariable int userId , @PathVariable int questionId){
         SingleQuestionDto singleQuestionDto = questionService.getQuestionById(userId, questionId);
         if (singleQuestionDto == null){
             return ResponseEntity.notFound().build();
@@ -44,7 +45,7 @@ class QuestionController {
     }
 
     @GetMapping("/user/{userId}/{pageNumber}")
-    public ResponseEntity<AllQuestionResponseDto> getQuestionsByUserId(@PathVariable Long userId, @PathVariable int pageNumber){
+    public ResponseEntity<AllQuestionResponseDto> getQuestionsByUserId(@PathVariable int userId, @PathVariable int pageNumber){
         AllQuestionResponseDto allQuestionResponseDto = questionService.getAllQuestionsByUserId(userId, pageNumber);
         return ResponseEntity.ok(allQuestionResponseDto);
     }

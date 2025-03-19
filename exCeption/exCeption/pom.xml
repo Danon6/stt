@@ -11,7 +11,7 @@
 	<groupId>tn.capgemini</groupId>
 	<artifactId>exCeption</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>stackquestion</name>
+	<name>exCeption</name>
 	<description>rest api for pfe </description>
 	<url/>
 	<licenses>

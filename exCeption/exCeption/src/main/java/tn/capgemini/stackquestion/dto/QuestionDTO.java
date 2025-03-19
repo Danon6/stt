@@ -1,4 +1,4 @@
-package tn.capgemini.exCeption.dto;
+package tn.capgemini.stackquestion.dto;
 
 import lombok.Data;
 
@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 public class QuestionDTO {
-    private Long id;
+    private int id;
     private String title;
     private String body;
     private Date createdDate;
     private List<String> tags;
-    private Long userId;
+    private int userId;
     private String username;
     private Integer voteCount = 0;
     private int voted;
