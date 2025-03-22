@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class UserManagementComponent implements OnInit {
   showEditForm: boolean = false;
   editedUser: any = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: UserService) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -57,21 +57,23 @@ export class UserManagementComponent implements OnInit {
     );
   }
 
-  // ✅ Supprimer un utilisateur
   deleteUser(userId: number) {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ID ${userId} ?`)) {
       this.authService.deleteUser(userId).subscribe(
-        () => {
+        (response) => {
+          console.log("✅ Suppression réussie :", response);
+          alert("Utilisateur supprimé avec succès !");
           this.users = this.users.filter(user => user.userId !== userId);
-          this.filteredUsers = [...this.users]; // Mise à jour de l'affichage
+          this.filteredUsers = [...this.users]; // ✅ Mise à jour de la liste affichée
         },
-        (error: any) => {
-          console.error("Erreur :", error);
+        (error) => {
+          console.error("❌ Erreur lors de la suppression :", error);
+          alert("⚠ Erreur lors de la suppression de l'utilisateur !");
         }
-        
       );
     }
   }
+  
 
   // ✅ Modifier un utilisateur
   editUser(user: any) {

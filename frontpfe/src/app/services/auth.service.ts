@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   // ✅ Fonction pour récupérer le token JWT
-  private getAuthHeaders(): HttpHeaders {
+  public getAuthHeaders(): HttpHeaders {
     let token = localStorage.getItem('jwtToken');
     console.log("ℹ️ Token récupéré :", token); // ✅ Ajout du log
     
@@ -100,36 +100,5 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/api/user/all`, { headers: this.getAuthHeaders() });
   }
 
-  // ✅ GET USER BY ID (réservé aux admins)
-  getUserById(userId: number): Observable<any> {
-    if (!this.isAdmin()) {
-      console.error("🚫 Accès refusé : L'utilisateur n'est pas ADMIN.");
-      return new Observable(observer => {
-        observer.error("Accès refusé : Vous devez être administrateur.");
-      });
-    }
-    return this.http.get(`${this.apiUrl}/api/user/${userId}`, { headers: this.getAuthHeaders() });
-  }
-
-  // ✅ UPDATE USER (réservé aux admins)
-  updateUser(userId: number, userData: any): Observable<any> {
-    if (!this.isAdmin()) {
-      console.error("🚫 Accès refusé : L'utilisateur n'est pas ADMIN.");
-      return new Observable(observer => {
-        observer.error("Accès refusé : Vous devez être administrateur.");
-      });
-    }
-    return this.http.put(`${this.apiUrl}/api/user/update/${userId}`, userData, { headers: this.getAuthHeaders() });
-  }
-
-  // ✅ DELETE USER (réservé aux admins)
-  deleteUser(userId: number): Observable<any> {
-    if (!this.isAdmin()) {
-      console.error("🚫 Accès refusé : L'utilisateur n'est pas ADMIN.");
-      return new Observable(observer => {
-        observer.error("Accès refusé : Vous devez être administrateur.");
-      });
-    }
-    return this.http.delete(`${this.apiUrl}/api/user/delete/${userId}`, { headers: this.getAuthHeaders() });
-  }
+  
 }

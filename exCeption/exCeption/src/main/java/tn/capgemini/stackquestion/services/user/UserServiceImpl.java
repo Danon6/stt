@@ -111,11 +111,18 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(Integer id) {
+    public boolean deleteUser(Integer id) {
         User adminUser = getAuthenticatedUser();
         if (adminUser.getTypeUser() != typeUser.ADMIN) {
             throw new RuntimeException("Accès refusé : Seul un ADMIN peut supprimer un utilisateur !");
         }
-        userRepository.deleteById(id);
+
+        if (userRepository.existsById(id)) { // ✅ Vérifie si l'utilisateur existe
+            userRepository.deleteById(id);
+            return true; // ✅ Retourne TRUE si la suppression est réussie
+        } else {
+            return false; // ❌ Retourne FALSE si l'utilisateur n'existe pas
+        }
     }
+
 }
