@@ -10,25 +10,16 @@ import tn.capgemini.stackquestion.dto.AllQuestionResponseDto;
 import tn.capgemini.stackquestion.dto.AnswerDto;
 import tn.capgemini.stackquestion.dto.QuestionDTO;
 import tn.capgemini.stackquestion.dto.SingleQuestionDto;
-import tn.capgemini.stackquestion.entities.Answer;
-import tn.capgemini.stackquestion.entities.Question;
-import tn.capgemini.stackquestion.entities.QuestionVote;
-import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.*;
 import tn.capgemini.stackquestion.entities.enums.VoteType;
-import tn.capgemini.stackquestion.repositories.AnswerRepository;
-import tn.capgemini.stackquestion.repositories.ImageRepository;
-import tn.capgemini.stackquestion.repositories.QuestionRepository;
-import tn.capgemini.stackquestion.repositories.UserRepository;
+import tn.capgemini.stackquestion.repositories.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class QuestionServiceImpl implements QuestionService {
-    //Number of questions per page
+public class QuestionServiceImpl implements  QuestionService{
+    // Number of questions per page
     public static final int SEARCH_RESULT_PER_PAGE = 5;
 
     @Autowired
@@ -50,25 +41,33 @@ public class QuestionServiceImpl implements QuestionService {
             Question question = new Question();
             question.setTitle(questionDto.getTitle());
             question.setBody(questionDto.getBody());
+
+            // Setting both:
+            question.setTags(questionDto.getTags());  // saved in questions_tags table
+            question.setTagsString(String.join(",", questionDto.getTags()));  // comma-separated tags in questions table
+
             question.setCreatedDate(new Date());
-            question.setTags(questionDto.getTags());
             question.setUser(optionalUser.get());
-            Question createdQuestion =  questionRepository.save(question);
+
+            Question createdQuestion = questionRepository.save(question);
 
             QuestionDTO createdQuestionDto = new QuestionDTO();
             createdQuestionDto.setId(createdQuestion.getId());
             createdQuestionDto.setTitle(createdQuestion.getTitle());
+            createdQuestionDto.setTags(createdQuestion.getTags());
+            createdQuestionDto.setUserId(createdQuestion.getUser().getUser_id());
             return createdQuestionDto;
         }
         return null;
     }
 
+
     @Override
     public AllQuestionResponseDto getAllQuestions(int pageNumber) {
-// Specify the sorting direction and the field to sort by
+        // Specify the sorting direction and the field to sort by
         Sort sort = Sort.by(Sort.Order.desc("createdDate"));
 
-// Create a Pageable object with sorting
+        // Create a Pageable object with sorting
         Pageable paging = PageRequest.of(pageNumber, SEARCH_RESULT_PER_PAGE, sort);
         Page<Question> questionsPage =  questionRepository.findAll(paging);
 
@@ -80,12 +79,13 @@ public class QuestionServiceImpl implements QuestionService {
         return allQuestionResponseDto;
     }
 
+
+
     @Override
     public SingleQuestionDto getQuestionById(int userId, int questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
 
         if(optionalQuestion.isPresent()){
-            //get the question and set it to singleQuestionDto
             SingleQuestionDto singleQuestionDto = new SingleQuestionDto();
 
             // vote check
@@ -105,12 +105,17 @@ public class QuestionServiceImpl implements QuestionService {
 
             singleQuestionDto.setQuestionDTO(questionDto);
 
-            //get the question's answers and set it to singleQuestionDto
+            // get the question's answers and set it to singleQuestionDto
             List<AnswerDto> answerDtoList = new ArrayList<>();
-            List<Answer> answerList = answerRepository.findAllByQuestionId(questionId);
+            List<Answer> answerList = answerRepository.findByQuestionId(questionId);
             for (Answer answer: answerList) {
                 AnswerDto answerDto = answer.getAnswerDto();
-                answerDto.setFile(imageRepository.findByAnswer(answer));
+                Image image = imageRepository.findByAnswer(answer);
+                if (image != null) {
+                    String base64 = Base64.getEncoder().encodeToString(image.getData());
+                    answerDto.setImageUrl("data:" + image.getType() + ";base64," + base64);
+                }
+
                 answerDtoList.add(answerDto);
             }
             singleQuestionDto.setAnswerDtoList(answerDtoList);

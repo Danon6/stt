@@ -12,10 +12,12 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "questions")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String title;
 
     @Lob
@@ -25,7 +27,9 @@ public class Question {
     private Date createdDate;
 
     @ElementCollection(targetClass = String.class)
-    private List<String> tags;
+    private List<String> tags; // remains the same (stored in questions_tags table)
+
+    private String tagsString; // new field to store tags as comma-separated in questions table
 
     private Integer voteCount = 0;
 
@@ -46,9 +50,10 @@ public class Question {
         questionDTO.setBody(body);
         questionDTO.setCreatedDate(createdDate);
         questionDTO.setUserId(user.getUser_id());
-        questionDTO.setTags(tags);
+        questionDTO.setTags(tags); // returning list
         questionDTO.setVoteCount(voteCount);
-        questionDTO.setUsername(user.getName());
+        questionDTO.setName(user.getName());
         return questionDTO;
     }
 }
+

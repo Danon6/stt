@@ -1,82 +1,257 @@
+<!-- ✅ NAVBAR fixe toujours visible -->
 <app-main-navbar></app-main-navbar>
 
-<!-- Conteneur principal -->
-<div class="main-container">
-
-  <!-- Barre latérale -->
+<div class="layout">
+  <!-- ✅ Sidebar -->
   <aside class="sidebar">
     <nav>
-      <!-- Section supérieure : Home & Trending Up -->
       <ul class="top-menu">
         <li>
           <a href="#" class="highlight flex items-center">
             <span class="icon material-icons">Home</span>
-            <img 
-              src="home-button.png" 
-              alt="Home"
-              class="h-10 w-10 rounded-full animate-fadeIn mr-2"
-            >
+            <img src="home-button.png" alt="Home" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
           </a>
         </li>
-
         <li>
           <a href="#" class="highlight flex items-center">
             <span class="icon material-icons">Trending_up</span>
-            <img 
-            src="up-arrow.png" 
-            alt="Trending Up"
-            class="h-10 w-10 rounded-full animate-fadeIn mr-2"
-          >
+            <img src="up-arrow.png" alt="Trending Up" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
           </a>
         </li>
       </ul>
-
-      <!-- Ligne de séparation -->
       <hr class="sidebar-divider" />
-
-      <!-- Section inférieure : Questions, Tags, Users, Companies -->
       <ul class="bottom-menu">
         <li>
-            <a href="#" class="highlight flex items-center">
-              <span class="icon material-icons">Questions</span>
-              <img 
-                src="inquiry.png" 
-                alt="Questions"
-                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
-              >
-            </a>
-          </li>
-          <li>
-            <a href="#" class="highlight flex items-center">
-              <span class="icon material-icons">Tags </span>
-              <img 
-                src="tag.png" 
-                alt="Tags"
-                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
-              >
-            </a>
-          </li>
-          <li>
-            <a href="#" class="highlight flex items-center">
-              <span class="icon material-icons">Users </span>
-              <img 
-                src="profile.png" 
-                alt="Users"
-                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
-              >
-            </a>
-          </li>
-          <li>
-            <a href="#" class="highlight flex items-center">
-              <span class="icon material-icons">Companies </span>
-              <img 
-                src="building.png" 
-                alt="Companies"
-                class="h-10 w-10 rounded-full animate-fadeIn mr-2"
-              >
-            </a>
-          </li>
+          <a href="#" class="highlight flex items-center" (click)="onQuestionsClick($event)">
+            <span class="icon material-icons">Questions</span>
+            <img src="inquiry.png" alt="Questions" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
+          </a>
+        </li>
+        <li>
+          <a href="#" class="highlight flex items-center">
+            <span class="icon material-icons">Tags</span>
+            <img src="tag.png" alt="Tags" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
+          </a>
+        </li>
+        <li>
+          <a href="#" class="highlight flex items-center">
+            <span class="icon material-icons">Users</span>
+            <img src="profile.png" alt="Users" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
+          </a>
+        </li>
+        <li>
+          <a href="#" class="highlight flex items-center">
+            <span class="icon material-icons">Companies</span>
+            <img src="building.png" alt="Companies" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
+          </a>
+        </li>
       </ul>
     </nav>
   </aside>
+
+  <!-- ✅ Main content area -->
+  <main class="content">
+    <div *ngIf="showQuestions">
+
+      <!-- Post Question button -->
+      <div *ngIf="showPostButton" style="display: flex; justify-content: flex-end; padding: 10px 30px;">
+        <button class="post-question-btn" (click)="onPostClick()">Post Question</button>
+      </div>
+
+      <!-- Question form -->
+      <div *ngIf="showForm" class="question-form">
+        <div class="parent" *ngIf="!isSubmitting">
+          <div class="child">
+            <h2 class="question-caption">Post Question</h2>
+
+            <form [formGroup]="validateForm" (ngSubmit)="submitQuestion()">
+              <!-- Title -->
+              <div class="form-input">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Title" formControlName="title" />
+                <div *ngIf="validateForm.get('title')?.invalid">Title is required!</div>
+              </div>
+
+              <!-- Body -->
+              <div class="form-input">
+                <label for="body">Body</label>
+                <textarea id="body" placeholder="Body" formControlName="body"></textarea>
+                <div *ngIf="validateForm.get('body')?.invalid">Body is required!</div>
+              </div>
+
+              <!-- Tags -->
+              <div class="form-input">
+                <label for="tags">Tags</label>
+                <div class="tag-list">
+                  <span *ngFor="let tag of newQuestion.tags" class="tag">
+                    {{ tag }}
+                    <button type="button" (click)="remove(tag)">x</button>
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  [(ngModel)]="tagsInput"
+                  (keydown.enter)="add($event)"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Add a tag"
+                />
+              </div>
+
+              <!-- Image upload -->
+              <div class="form-input">
+                <label for="image">Attach Image</label>
+                <input
+                  type="file"
+                  id="image"
+                  (change)="onImageSelected($event)"
+                  accept="image/*"
+                  class="block w-full border border-blue-300 rounded px-2 py-1 text-sm"
+                />
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" class="submit-btn">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="my-6 border-blue-500" />
+      <h2 class="text-xl font-bold mb-4 text-blue-800">Latest Questions</h2>
+
+      <!-- No Questions -->
+      <div *ngIf="questions.length === 0" class="text-gray-500 mb-4">
+        No questions found.
+      </div>
+
+      <!-- Questions Loop -->
+      <div *ngFor="let q of questions">
+        <ng-container *ngIf="q.id as questionId">
+          <div class="mb-4 p-4 border rounded shadow bg-blue-50">
+            <h3 class="text-lg font-semibold text-blue-900">{{ q.title }}</h3>
+            <p class="text-gray-800 mb-2">{{ q.body }}</p>
+
+            <!-- Question Image -->
+            <div *ngIf="q.imageUrl" class="mb-2">
+              <img
+                [src]="q.imageUrl"
+                alt="Question Image"
+                class="rounded shadow max-w-xs cursor-pointer hover:opacity-80 transition"
+                (click)="openImageModal(q.imageUrl!)"
+              />
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2">
+              <span *ngFor="let tag of q.tags" class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">
+                {{ tag }}
+              </span>
+            </div>
+
+            <!-- Author -->
+            <div class="text-sm text-gray-600 mb-2">
+              Posted by <strong>{{ q.name }}</strong>
+              <span *ngIf="q.createdDate">&nbsp;&nbsp;on {{ q.createdDate | date: 'medium' }}</span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-4 mt-4">
+              <button (click)="toggleAnswerForm(questionId)" class="bg-blue-500 text-white px-3 py-1 rounded">
+                Add Answer
+              </button>
+              <button (click)="toggleAnswers(questionId)" class="bg-blue-500 text-white px-3 py-1 rounded">
+                {{ answersVisible[questionId] ? 'Hide Answers' : 'See Answers' }}
+              </button>
+            </div>
+
+            <!-- Answer Form -->
+            <div *ngIf="answerFormsVisible[questionId]" class="mt-2">
+              <textarea
+                [(ngModel)]="newAnswer[questionId]"
+                rows="3"
+                class="w-full p-2 border rounded"
+                placeholder="Type your answer...">
+              </textarea>
+
+              <input
+                type="file"
+                (change)="onAnswerImageSelected($event, questionId)"
+                accept="image/*"
+                class="mt-2 block w-full text-sm border border-indigo-300 rounded"
+              />
+
+              <button (click)="submitAnswer(questionId)" class="mt-2 bg-indigo-600 text-white px-4 py-1 rounded">
+                Submit Answer
+              </button>
+            </div>
+
+            <!-- Answers -->
+            <div *ngIf="answersVisible[questionId]" class="mt-4 bg-blue-100 p-3 rounded border shadow">
+              <h4 class="text-md font-semibold mb-2 text-indigo-800">Answers:</h4>
+
+              <div *ngIf="hasAnswers(questionId); else noAnswersYet">
+                <div *ngFor="let ans of answersMap[questionId]" class="mb-3 p-2 border rounded bg-white">
+                  <p class="text-gray-800">{{ ans.body }}</p>
+
+                  <div *ngIf="ans.imageUrl" class="mb-2">
+                    <img
+                      [src]="ans.imageUrl"
+                      alt="Answer Image"
+                      class="rounded shadow max-w-xs cursor-pointer hover:opacity-80"
+                      (click)="openImageModal(ans.imageUrl!)"
+                      (error)="ans.imageUrl = undefined"
+                    />
+                  </div>
+
+                  <small class="text-gray-500">
+                    By <strong>{{ ans.username }}</strong> on {{ ans.createdDate | date: 'short' }}
+                  </small>
+                </div>
+              </div>
+
+              <ng-template #noAnswersYet>
+                <p class="text-sm text-gray-400 italic">No answers yet for this question.</p>
+              </ng-template>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6 flex gap-4 justify-center items-center">
+        <button
+          (click)="loadQuestions(pageNumber - 1)"
+          [disabled]="pageNumber === 0"
+          class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded">
+          Previous
+        </button>
+
+        <span class="font-medium text-gray-700">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
+
+        <button
+          (click)="loadQuestions(pageNumber + 1)"
+          [disabled]="pageNumber >= totalPages - 1"
+          class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <!-- ✅ Image Modal -->
+    <div
+      *ngIf="showImageModal"
+      class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+      (click)="closeImageModal()"
+    >
+      <img
+        [src]="selectedImageUrl"
+        alt="Image Preview"
+        class="rounded shadow-lg border-4 border-white max-w-[90vw] max-h-[85vh]"
+        (click)="$event.stopPropagation()"
+      />
+    </div>
+
+
+  </main>
 </div>

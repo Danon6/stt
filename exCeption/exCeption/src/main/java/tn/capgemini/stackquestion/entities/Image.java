@@ -18,16 +18,21 @@ public class Image {
     private Integer id;
 
     private String name;
-
     private String type;
 
     @Lob
     @Column(name = "data", length = 10000)
     private byte[] data;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="answer_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id", nullable = true) // ⬅️ Les deux doivent être nullable
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private Answer answer;
+    private Question question;
+
 }

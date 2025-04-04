@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -21,6 +21,13 @@ export class UserService {
   getAllUsers(): Observable<any> {
     return this.http.get(`${this.apiUrl}/all`, { headers: this.getAuthHeaders() })
       .pipe(
+        map((response: any) => {
+          // Extracting user ID and username from each user in the response
+          return response.map((user: { id: number; username: string }) => ({
+            id: user.id,
+            username: user.username
+          }));
+        }),
         catchError(error => {
           console.error("❌ Erreur lors de la récupération des utilisateurs", error);
           return throwError(() => new Error("Erreur serveur lors de la récupération des utilisateurs."));
@@ -32,6 +39,13 @@ export class UserService {
   getUserById(userId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${userId}`, { headers: this.getAuthHeaders() })
       .pipe(
+        map((response: any) => {
+          // Extracting user ID and username from the response
+          return {
+            id: response.id,
+            username: response.username
+          };
+        }),
         catchError(error => {
           console.error(`❌ Erreur lors de la récupération de l'utilisateur ID ${userId}`, error);
           return throwError(() => new Error(`Erreur serveur lors de la récupération de l'utilisateur ID ${userId}.`));
@@ -50,6 +64,7 @@ export class UserService {
       );
   }
 
+  // ✅ Supprimer un utilisateur
   deleteUser(userId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/delete/${userId}`, { headers: this.getAuthHeaders() })
       .pipe(
@@ -60,6 +75,10 @@ export class UserService {
         })
       );
   }
-  
+
+  getLoggedInUser() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user;  // This will return the user object with id, username, etc.
+  }
   
 }

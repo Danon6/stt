@@ -38,14 +38,14 @@ public class VoteServiceImpl implements VoteService{
 
             questionVote.setVoteType(questionVoteDto.getVoteType());
 
-            if(questionVote.getVoteType() == VoteType.UPVOTE){
-                existingQuestion.setVoteCount(existingQuestion.getVoteCount() + 1);
-            }else {
-                existingQuestion.setVoteCount(existingQuestion.getVoteCount() - 1);
-            }
+           // if(questionVote.getVoteType() == VoteType.UPVOTE){
+             //   existingQuestion.setVoteCount(existingQuestion.getVoteCount() + 1);
+            //}else {
+              //  existingQuestion.setVoteCount(existingQuestion.getVoteCount() - 1);
+           // }
 
-            questionVote.setQuestion(optionalQuestion.get());
-            questionVote.setUser(optionalUser.get());
+            //questionVote.setQuestion(optionalQuestion.get());
+            //questionVote.setUser(optionalUser.get());
 
             questionRepository.save(existingQuestion);
 

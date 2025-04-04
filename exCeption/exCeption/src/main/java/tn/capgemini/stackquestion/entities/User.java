@@ -30,9 +30,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private typeUser typeUser;
 
-    @ManyToOne
-    @JoinColumn(name = "departement_id")
-    private Departement departement;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;

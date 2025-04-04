@@ -60,7 +60,12 @@ public class AuthentificationController {
         final UserDetails userDetails= UserDetailsService.loadUserByUsername(authentificationRequest.getEmail());
         Optional<User> user =userRepository.findFirstByEmail(authentificationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(user.get().getEmail());
-        return new AuthentificationResponse(jwt,user.get().getTypeUser());
-
+        // Return the authentication response with userId and username along with the jwtToken and typeUser
+        return new AuthentificationResponse(
+                jwt,
+                user.get().getTypeUser(),  // User's role (MEMBER, ADMIN, etc.)
+                user.get().getUser_id(),        // User's ID (assuming getId() returns the userId)
+                user.get().getName()   // User's username
+        );
     }
 }

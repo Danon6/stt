@@ -11,13 +11,17 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  // ✅ Fonction pour récupérer le token JWT
+  // ✅ Vérifie si on est bien côté navigateur
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  }
+
+  // ✅ Get Authorization Headers (for authenticated requests)
   public getAuthHeaders(): HttpHeaders {
-    let token = localStorage.getItem('jwtToken');
-    console.log("ℹ️ Token récupéré :", token); // ✅ Ajout du log
-    
+    const token = this.isBrowser() ? localStorage.getItem('jwtToken') : null;
+
     if (!token) {
-      console.error("⚠️ Aucun token JWT trouvé !");
+      console.error("⚠️ Token is missing or invalid!");
       return new HttpHeaders();
     }
 
@@ -27,69 +31,92 @@ export class AuthService {
     });
   }
 
-  // ✅ LOGIN
+  // ✅ Login
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/authenticate`, credentials).pipe(
       tap((response: any) => {
-        if (response.jwtToken) {
-          if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('jwtToken', response.jwtToken);
-            localStorage.setItem('typeUser', response.typeUser);
-          }
+        console.log('JWT Token Response:', response);
+
+        if (this.isBrowser() && response.jwtToken) {
+          localStorage.setItem('jwtToken', response.jwtToken);
+          localStorage.setItem('typeUser', response.typeUser);
+
+          const user = {
+            id: response.user_id,
+            username: response.name
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          console.log("User Data Stored:", user);
+
           this.router.navigate(['/main']);
         }
       })
     );
   }
 
-  // ✅ REGISTER
-  register(userData: { 
-    name: string, 
-    email: string, 
-    password: string, 
-    phone: string, 
-    date: string, // Birthday in YYYY-MM-DD format
-    typeUser: string 
+  // ✅ Register
+  register(userData: {
+    name: string,
+    email: string,
+    password: string,
+    phone: string,
+    date: string,
+    typeUser: string
   }): Observable<any> {
     return this.http.post(`${this.apiUrl}/signup`, userData);
   }
 
-  // ✅ LOGOUT
+  // ✅ Logout
   logout(): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (this.isBrowser()) {
       localStorage.removeItem('jwtToken');
       localStorage.removeItem('typeUser');
+      localStorage.removeItem('user');
     }
     this.router.navigate(['/login']);
   }
 
-  // ✅ CHECK AUTHENTICATION
+  // ✅ Check if the user is authenticated
   isAuthenticated(): boolean {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      return !!localStorage.getItem('jwtToken');
+    const token = this.isBrowser() ? localStorage.getItem('jwtToken') : null;
+    if (!token) return false;
+
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) {
+      console.error("⚠️ Invalid JWT token format.");
+      return false;
     }
-    return false;
+
+    try {
+      const payload = tokenParts[1];
+      const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+      const parsedPayload = JSON.parse(decodedPayload);
+      const expirationDate = parsedPayload.exp * 1000;
+      return Date.now() < expirationDate;
+    } catch (err) {
+      console.error("❌ Error decoding token:", err);
+      return false;
+    }
   }
 
-  // ✅ GET USER ROLE
+  // ✅ Get role (typeUser)
   getUserRole(): string | null {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem('typeUser');
-    }
-    return null;
+    return this.isBrowser() ? localStorage.getItem('typeUser') : null;
   }
 
-  // ✅ CHECK IF ADMIN
+  // ✅ Is user admin?
   isAdmin(): boolean {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const role = localStorage.getItem('typeUser')?.toUpperCase();
-      console.log("ℹ️ Rôle récupéré :", role); // ✅ Ajout du log
-      return role === 'ADMIN';
-    }
-    return false;
+    const role = this.isBrowser() ? localStorage.getItem('typeUser')?.toUpperCase() : null;
+    console.log("ℹ️ Rôle récupéré :", role);
+    return role === 'ADMIN';
   }
 
-  // ✅ GET ALL USERS (réservé aux admins)
+  // ✅ Get token (used internally)
+  getAuthToken(): string | null {
+    return this.isBrowser() ? localStorage.getItem('jwtToken') : null;
+  }
+
+  // ✅ Get all users (admin only)
   getAllUsers(): Observable<any> {
     if (!this.isAdmin()) {
       console.error("🚫 Accès refusé : L'utilisateur n'est pas ADMIN.");
@@ -97,8 +124,9 @@ export class AuthService {
         observer.error("Accès refusé : Vous devez être administrateur.");
       });
     }
-    return this.http.get(`${this.apiUrl}/api/user/all`, { headers: this.getAuthHeaders() });
-  }
 
-  
+    return this.http.get(`${this.apiUrl}/api/user/all`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

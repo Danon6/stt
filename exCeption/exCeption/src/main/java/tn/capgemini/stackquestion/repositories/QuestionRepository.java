@@ -10,4 +10,5 @@ import tn.capgemini.stackquestion.entities.Question;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Page<Question> findAllByUser (int user_id, Pageable pageable);
+
 }

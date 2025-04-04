@@ -13,7 +13,9 @@ public class QuestionDTO {
     private Date createdDate;
     private List<String> tags;
     private int userId;
-    private String username;
+    private String name;
     private Integer voteCount = 0;
     private int voted;
 }
+
+

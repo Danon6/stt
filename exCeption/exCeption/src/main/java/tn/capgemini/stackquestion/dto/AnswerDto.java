@@ -24,5 +24,5 @@ public class AnswerDto {
 
     private String username;
 
-    private Image file;
+    private String imageUrl; // pour le frontend (base64 ou URL)
 }

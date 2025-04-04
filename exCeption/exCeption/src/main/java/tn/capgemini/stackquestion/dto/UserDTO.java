@@ -21,7 +21,6 @@ public class UserDTO {
     private Date date;
     private typeUser typeUser;
     private String password;
-    private Integer departementId;  // On stocke l'ID au lieu de l'objet entier+
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp

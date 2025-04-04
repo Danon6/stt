@@ -1,37 +1,36 @@
 /* 🌟 Navbar */
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: sticky; // reste en haut sans casser le layout
+    top: 0;
+    z-index: 100;
     background: white;
-    padding: 10px 20px;
-    border-bottom: 3px solid #0077cc; 
+    border-bottom: 3px solid #0077cc;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* 🌟 Barre de recherche */
-.search-input {
+  }
+  
+  /* 🌟 Barre de recherche */
+  .search-input {
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 8px 12px;
     width: 250px;
     transition: all 0.3s ease-in-out;
-}
-
-.search-input:focus {
+  }
+  
+  .search-input:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.search-btn {
+  }
+  
+  .search-btn {
     background: none;
     border: none;
     cursor: pointer;
     font-size: 16px;
-}
-
-/* 🌟 Boutons */
-.btn {
+  }
+  
+  /* 🌟 Boutons */
+  .btn {
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 14px;
@@ -39,39 +38,41 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     border: none;
-}
-
-/* Bouton "Accès Admin" */
-.admin-btn {
+  }
+  
+  .admin-btn {
     background-color: #007bff;
     color: white;
     border: 2px solid #007bff;
     padding: 10px 20px;
-}
-
-.admin-btn:hover {
+  }
+  
+  .admin-btn:hover {
     background-color: white;
     color: #007bff;
     border: 2px solid #007bff;
-}
-
-/* Bouton "Log Out" */
-.logout {
+  }
+  
+  .logout {
     background-color: white;
     color: #007bff;
     border: 2px solid #007bff;
     padding: 10px 20px;
     transition: all 0.3s ease-in-out;
-}
-
-/* Effet au survol */
-.logout:hover {
+  }
+  
+  .logout:hover {
     background-color: #007bff;
     color: white;
-}
-
-/* Effet au clic */
-.logout:active {
+  }
+  
+  .logout:active {
     background-color: #007bff !important;
-    color: #007bff !important;
-}
+    color: white !important;
+  }
+  
+  /* 🌟 Ajustement du contenu */
+  .content {
+    padding-top: 80px; // ajuste si nécessaire
+  }
+  

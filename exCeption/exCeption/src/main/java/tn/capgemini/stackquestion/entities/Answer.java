@@ -22,8 +22,9 @@ public class Answer {
     private Integer id;
 
     @Lob
-    @Column(name = "body", length = 512)
+    @Column(name = "body")
     private String body;
+
 
     private Date createdDate;
 
@@ -32,6 +33,11 @@ public class Answer {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
+
+    @OneToOne(mappedBy = "answer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Image image;
+
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question_id", nullable = false)
@@ -47,6 +53,12 @@ public class Answer {
         answerDto.setQuestionId(question.getId());
         answerDto.setUsername(user.getName());
         answerDto.setCreatedDate(createdDate);
+
+        if (image != null) {
+            answerDto.setImageUrl("/api/image/answer/" + id);
+        }
+
         return answerDto;
     }
+
 }
