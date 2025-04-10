@@ -1,5 +1,6 @@
 package tn.capgemini.stackquestion.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,9 @@ public class User {
     private Date dateNaissance;
     @Enumerated(EnumType.STRING)
     private typeUser typeUser;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Knowledge> knowledgeList;
 
 
     @CreationTimestamp

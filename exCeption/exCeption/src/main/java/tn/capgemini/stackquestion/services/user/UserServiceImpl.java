@@ -70,10 +70,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public List<UserDTO> getAllUsers() {
-        User adminUser = getAuthenticatedUser();
-        if (adminUser.getTypeUser() != typeUser.ADMIN) {
-            throw new RuntimeException("Accès refusé : Seul un ADMIN peut voir la liste des utilisateurs !");
-        }
+
         return userRepository.findAll().stream()
                 .map(User::mapUserToUserDTO)
                 .collect(Collectors.toList());

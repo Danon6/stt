@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.capgemini.stackquestion.dto.AnswerDto;
-import tn.capgemini.stackquestion.entities.Answer;
-import tn.capgemini.stackquestion.entities.Image;
-import tn.capgemini.stackquestion.entities.Question;
-import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.dto.AnswerVoteDto;
+import tn.capgemini.stackquestion.entities.*;
+import tn.capgemini.stackquestion.entities.enums.VoteType;
 import tn.capgemini.stackquestion.repositories.AnswerRepository;
 import tn.capgemini.stackquestion.repositories.ImageRepository;
 import tn.capgemini.stackquestion.repositories.QuestionRepository;
@@ -15,10 +14,7 @@ import tn.capgemini.stackquestion.repositories.UserRepository;
 import tn.capgemini.stackquestion.services.user.image.ImageService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
@@ -37,6 +33,10 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private tn.capgemini.stackquestion.repositories.AnswerVoteRepository answerVoteRepository;
+
 
     @Override
     public AnswerDto postAnswer(AnswerDto answerDto, MultipartFile imageFile) {
@@ -93,4 +93,58 @@ public class AnswerServiceImpl implements AnswerService {
 
         return answerDtos;
     }
+    public AnswerVoteDto voteAnswer(int userId, int answerId, VoteType voteType) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
+
+        if (optionalUser.isPresent() && optionalAnswer.isPresent()) {
+            User user = optionalUser.get();
+            Answer answer = optionalAnswer.get();
+
+            // ✅ NOUVEAU : on passe directement les objets
+            Optional<AnswerVote> existingVoteOpt = answerVoteRepository.findByUserAndAnswer(user, answer);
+
+            AnswerVote vote;
+            if (existingVoteOpt.isPresent()) {
+                vote = existingVoteOpt.get();
+                if (vote.getVoteType() == voteType) {
+                    answerVoteRepository.delete(vote);
+                    return null;
+                } else {
+                    vote.setVoteType(voteType);
+                    vote = answerVoteRepository.save(vote);
+                }
+            } else {
+                vote = new AnswerVote();
+                vote.setUser(user);
+                vote.setAnswer(answer);
+                vote.setVoteType(voteType);
+                vote = answerVoteRepository.save(vote);
+            }
+
+            AnswerVoteDto dto = new AnswerVoteDto();
+            dto.setId(vote.getId());
+            dto.setUserId(userId);
+            dto.setAnswerId(answerId);
+            dto.setVoteType(vote.getVoteType());
+
+            return dto;
+        }
+
+        return null;
+    }
+
+    public Map<String, Integer> getAnswerVoteStats(int answerId) {
+        int upvotes = answerVoteRepository.countByAnswerIdAndVoteType(answerId, VoteType.UPVOTE);
+        int downvotes = answerVoteRepository.countByAnswerIdAndVoteType(answerId, VoteType.DOWNVOTE);
+
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("upvotes", upvotes);
+        stats.put("downvotes", downvotes);
+        stats.put("score", upvotes - downvotes);
+
+        return stats;
+    }
+
+
 }

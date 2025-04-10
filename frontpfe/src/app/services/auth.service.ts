@@ -79,25 +79,45 @@ export class AuthService {
   // ✅ Check if the user is authenticated
   isAuthenticated(): boolean {
     const token = this.isBrowser() ? localStorage.getItem('jwtToken') : null;
-    if (!token) return false;
+
+    console.log('Token récupéré:', token);  // Log le token récupéré
+
+    if (!token) {
+      console.log('❌ Aucun token trouvé dans localStorage.');
+      return false;
+    }
 
     const tokenParts = token.split('.');
+    console.log('Token split en 3 parties:', tokenParts);  // Log les 3 parties du token
+
     if (tokenParts.length !== 3) {
-      console.error("⚠️ Invalid JWT token format.");
+      console.error("⚠️ Format de token invalide.");
       return false;
     }
 
     try {
       const payload = tokenParts[1];
+      console.log('Payload récupéré du token:', payload);  // Log le payload brut du token
+
       const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+      console.log('Payload décodé:', decodedPayload);  // Log le payload décodé
+
       const parsedPayload = JSON.parse(decodedPayload);
+      console.log('Payload JSON parsé:', parsedPayload);  // Log le payload après le parse
+
       const expirationDate = parsedPayload.exp * 1000;
-      return Date.now() < expirationDate;
+      console.log('Date d\'expiration du token:', new Date(expirationDate));  // Log la date d'expiration du token
+
+      const isValid = Date.now() < expirationDate;
+      console.log('Token valide:', isValid);  // Log si le token est valide ou non
+      return isValid;
+
     } catch (err) {
-      console.error("❌ Error decoding token:", err);
+      console.error("❌ Erreur lors du décodage du token:", err);
       return false;
     }
   }
+
 
   // ✅ Get role (typeUser)
   getUserRole(): string | null {

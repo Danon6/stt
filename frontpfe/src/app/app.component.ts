@@ -7,6 +7,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 // Import the standalone MainComponent directly
 import { MainComponent } from './pages/main/main.component';
+import { TrendingComponent } from './pages/trending/trending.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,14 +16,14 @@ import { MainComponent } from './pages/main/main.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [
+    RouterModule,
     RouterOutlet,
     FormsModule,
     CommonModule,
     HttpClientModule,
-    NavbarComponent,   // Import NavbarComponent
-
-    // ✅ Directly import MainComponent since it's standalone
-    MainComponent
+    NavbarComponent,
+    MainComponent,
+    TrendingComponent
   ]
 })
 export class AppComponent {

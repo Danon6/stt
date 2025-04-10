@@ -16,6 +16,8 @@ public class QuestionDTO {
     private String name;
     private Integer voteCount = 0;
     private int voted;
+    private String departement;
+    private String projet;
 }
 
 

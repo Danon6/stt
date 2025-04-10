@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.capgemini.stackquestion.dto.AnswerDto;
+import tn.capgemini.stackquestion.dto.AnswerVoteDto;
 import tn.capgemini.stackquestion.repositories.AnswerRepository;
 import tn.capgemini.stackquestion.services.answer.AnswerServiceImpl;
 
@@ -59,4 +60,29 @@ public class AnswerController {
         List<AnswerDto> answers = answerService.getAnswersByQuestionId(questionId);
         return ResponseEntity.ok(answers);
     }
+    // ✅ Voter pour une réponse
+    @PostMapping("/vote")
+    public ResponseEntity<?> voteAnswer(@RequestBody AnswerVoteDto voteDto) {
+        try {
+            var result = answerService.voteAnswer(
+                    voteDto.getUserId(),
+                    voteDto.getAnswerId(),
+                    voteDto.getVoteType()
+            );
+
+            if (result == null) {
+                return ResponseEntity.ok("Vote supprimé");
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors du vote : " + e.getMessage());
+        }
+    }
+
+    // ✅ Obtenir les stats des votes pour une réponse
+    @GetMapping("/{answerId}/votes")
+    public ResponseEntity<?> getAnswerVoteStats(@PathVariable int answerId) {
+        return ResponseEntity.ok(answerService.getAnswerVoteStats(answerId));
+    }
+
 }

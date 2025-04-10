@@ -9,7 +9,20 @@ export interface AnswerDTO {
   questionId: number;
   userId: number;
   username?: string;
-  imageUrl?: string; // URL vers l'image de l'answer
+  imageUrl?: string;
+  voteCount?: number; // ✅ Ajout pour afficher les votes dans l'UI
+}
+
+export interface AnswerVoteDto {
+  userId: number;
+  answerId: number;
+  voteType: 'UPVOTE' | 'DOWNVOTE';
+}
+
+export interface AnswerVoteStats {
+  upvotes: number;
+  downvotes: number;
+  score: number;
 }
 
 @Injectable({
@@ -20,7 +33,7 @@ export class AnswerService {
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Crée les headers avec le token JWT
+  // ✅ JWT Headers
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('jwtToken');
     return new HttpHeaders({
@@ -28,21 +41,21 @@ export class AnswerService {
     });
   }
 
-  // ✅ Envoie une réponse avec ou sans image (via FormData)
+  // ✅ Poster une réponse (avec ou sans image)
   postAnswerWithImage(formData: FormData): Observable<AnswerDTO> {
     return this.http.post<AnswerDTO>(this.apiUrl, formData, {
       headers: this.getAuthHeaders()
     });
   }
 
-  // ✅ Récupère les réponses d’une question
+  // ✅ Récupérer toutes les réponses d'une question
   getAnswersByQuestionId(questionId: number): Observable<AnswerDTO[]> {
     return this.http.get<AnswerDTO[]>(`${this.apiUrl}/question/${questionId}`, {
       headers: this.getAuthHeaders()
     });
   }
 
-  // ✅ Upload image seule pour une réponse (optionnel)
+  // ✅ Upload image pour une réponse
   uploadImageForAnswer(answerId: number, image: File): Observable<any> {
     const formData = new FormData();
     formData.append('multipartFile', image);
@@ -52,12 +65,25 @@ export class AnswerService {
     });
   }
 
-  // ✅ Get image for answer (➡️ pour affichage sans reload)
+  // ✅ Récupérer l'image associée à une réponse
   getImageByAnswerId(answerId: number): Observable<Blob> {
     return this.http.get(`http://localhost:8080/api/image/answer/${answerId}`, {
       headers: this.getAuthHeaders(),
       responseType: 'blob'
     }) as Observable<Blob>;
   }
-  
+
+  // ✅ Voter sur une réponse
+  voteAnswer(vote: AnswerVoteDto): Observable<any> {
+    return this.http.post(`${this.apiUrl}/vote`, vote, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  // ✅ Obtenir les stats de vote d'une réponse
+  getAnswerVotes(answerId: number): Observable<AnswerVoteStats> {
+    return this.http.get<AnswerVoteStats>(`${this.apiUrl}/${answerId}/votes`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

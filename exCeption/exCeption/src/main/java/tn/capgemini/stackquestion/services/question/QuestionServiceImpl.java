@@ -6,10 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import tn.capgemini.stackquestion.dto.AllQuestionResponseDto;
-import tn.capgemini.stackquestion.dto.AnswerDto;
-import tn.capgemini.stackquestion.dto.QuestionDTO;
-import tn.capgemini.stackquestion.dto.SingleQuestionDto;
+import tn.capgemini.stackquestion.dto.*;
 import tn.capgemini.stackquestion.entities.*;
 import tn.capgemini.stackquestion.entities.enums.VoteType;
 import tn.capgemini.stackquestion.repositories.*;
@@ -34,10 +31,18 @@ public class QuestionServiceImpl implements  QuestionService{
     @Autowired
     ImageRepository imageRepository;
 
+    @Autowired
+    QuestionVoteRepository questionVoteRepository;
+
+
     @Override
     public QuestionDTO addQuestion(QuestionDTO questionDto) {
         Optional<User> optionalUser = userRepository.findById(questionDto.getUserId());
         if (optionalUser.isPresent()){
+            Optional<Question> existingQuestion = questionRepository.findByTitleIgnoreCase(questionDto.getTitle().trim());
+            if (existingQuestion.isPresent()) {
+                throw new RuntimeException("⚠️ A question with this title already exists.");
+            }
             Question question = new Question();
             question.setTitle(questionDto.getTitle());
             question.setBody(questionDto.getBody());
@@ -48,6 +53,8 @@ public class QuestionServiceImpl implements  QuestionService{
 
             question.setCreatedDate(new Date());
             question.setUser(optionalUser.get());
+            question.setDepartement(questionDto.getDepartement());
+            question.setProjet(questionDto.getProjet());
 
             Question createdQuestion = questionRepository.save(question);
 
@@ -79,6 +86,22 @@ public class QuestionServiceImpl implements  QuestionService{
         return allQuestionResponseDto;
     }
 
+    @Override
+    public AllQuestionResponseDto getAllQuestions(int pageNumber, int size) {
+        // Specify the sorting direction and the field to sort by
+        Sort sort = Sort.by(Sort.Order.asc("voteCount"));
+
+        // Create a Pageable object with sorting
+        Pageable paging = PageRequest.of(pageNumber, size, sort);
+        Page<Question> questionsPage =  questionRepository.findAll(paging);
+
+        AllQuestionResponseDto allQuestionResponseDto = new AllQuestionResponseDto();
+
+        allQuestionResponseDto.setQuestionDTOList(questionsPage.getContent().stream().map(Question::getQuestionDto).collect(Collectors.toList()));
+        allQuestionResponseDto.setPageNumber(questionsPage.getPageable().getPageNumber());
+        allQuestionResponseDto.setTotalPages(questionsPage.getTotalPages());
+        return allQuestionResponseDto;
+    }
 
 
     @Override
@@ -136,4 +159,65 @@ public class QuestionServiceImpl implements  QuestionService{
         allQuestionResponseDto.setTotalPages(questionsPage.getTotalPages());
         return allQuestionResponseDto;
     }
+    public QuestionVoteDto voteQuestion(int userId, int questionId, VoteType voteType) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+
+        if (optionalUser.isPresent() && optionalQuestion.isPresent()) {
+            User user = optionalUser.get();
+            Question question = optionalQuestion.get();
+
+            Optional<QuestionVote> existingVoteOpt = questionVoteRepository.findByUserAndQuestion(user, question);
+
+
+            QuestionVote vote;
+            if (existingVoteOpt.isPresent()) {
+                vote = existingVoteOpt.get();
+                if (vote.getVoteType() == voteType) {
+                    question.setVoteCount(question.getVoteCount() - 1);
+                    questionRepository.save(question);
+                    questionVoteRepository.delete(vote);
+                    return null; // vote annulé
+                } else {
+                    vote.setVoteType(voteType);
+                    question.setVoteCount(question.getVoteCount() + 1);
+                    questionRepository.save(question);
+                    vote = questionVoteRepository.save(vote);
+                }
+            } else {
+                vote = new QuestionVote();
+                vote.setUser(user);
+                vote.setQuestion(question);
+                vote.setVoteType(voteType);
+                vote = questionVoteRepository.save(vote);
+            }
+
+            QuestionVoteDto dto = new QuestionVoteDto();
+            dto.setId(vote.getId());
+            dto.setUserId(userId);
+            dto.setQuestionId(questionId);
+            dto.setVoteType(vote.getVoteType());
+
+            return dto;
+        }
+
+        return null;
+    }
+    @Override
+    public Map<String, Integer> getQuestionVoteStats(int questionId) {
+        int upvotes = questionVoteRepository.countByQuestionIdAndVoteType(questionId, VoteType.UPVOTE);
+        int downvotes = questionVoteRepository.countByQuestionIdAndVoteType(questionId, VoteType.DOWNVOTE);
+
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("upvotes", upvotes);
+        stats.put("downvotes", downvotes);
+        stats.put("score", upvotes - downvotes);
+
+        return stats;
+    }
+
+
+
+
+
 }

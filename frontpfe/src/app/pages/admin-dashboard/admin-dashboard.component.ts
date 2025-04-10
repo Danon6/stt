@@ -7,14 +7,15 @@ import { UserManagementComponent } from './user-management/user-management.compo
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent, UserManagementComponent], // ✅ Importation correcte
+  imports: [CommonModule, RouterModule, NavbarComponent, UserManagementComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent {
-  showUserManagement = false; // ✅ Caché par défaut
+  showUserManagement = false; // Caché par défaut
 
   toggleUserManagement() {
-    this.showUserManagement = !this.showUserManagement; // ✅ Change l'état à chaque clic
+    this.showUserManagement = !this.showUserManagement; // Change l'état à chaque clic
+    console.log('toggleUserManagement appelé. showUserManagement:', this.showUserManagement); // Log l'état de showUserManagement
   }
 }

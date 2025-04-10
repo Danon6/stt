@@ -1,0 +1,88 @@
+@use 'tailwindcss' as *;
+
+/* 🌟 Layout container */
+.layout {
+  display: flex;
+}
+
+/* 🌟 Sidebar */
+.sidebar {
+  width: 250px;
+  background: white;
+  padding: 20px;
+  border-right: 2px solid #ddd;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  height: calc(100vh - 80px);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+/* 🌟 Main content */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+  box-sizing: border-box;
+}
+
+/* Sidebar Menus */
+.top-menu,
+.bottom-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bottom-menu {
+  margin-top: 10px;
+}
+
+.sidebar-divider {
+  border: none;
+  height: 1px;
+  background: #ddd;
+  margin: 10px 0;
+}
+
+.bottom-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  text-decoration: none;
+  color: #04435c;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: #f1f1f1;
+  }
+}
+
+.highlight {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #2d4261;
+  background: white;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: #00599956;
+  }
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.icon-img {
+  transform: scale(1.2);
+}

@@ -32,9 +32,11 @@ public class Question {
     private String tagsString; // new field to store tags as comma-separated in questions table
 
     private Integer voteCount = 0;
+    private String departement;
+    private String projet;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
@@ -43,7 +45,7 @@ public class Question {
     @JsonIgnore
     private List<QuestionVote> questionVoteList;
 
-    public QuestionDTO getQuestionDto(){
+    public QuestionDTO getQuestionDto() {
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setId(id);
         questionDTO.setTitle(title);
@@ -53,6 +55,8 @@ public class Question {
         questionDTO.setTags(tags); // returning list
         questionDTO.setVoteCount(voteCount);
         questionDTO.setName(user.getName());
+        questionDTO.setDepartement(departement);
+        questionDTO.setProjet(projet);
         return questionDTO;
     }
 }

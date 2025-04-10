@@ -17,6 +17,9 @@ export interface QuestionDTO {
   imageUrl?: string;
   name?: string; // ✅ add this
   createdDate?: string; // ✅ add this
+  voteCount?: number;
+  departement?: string;
+  projet?: string;
 }
 
 export interface AllQuestionResponseDto {
@@ -31,14 +34,33 @@ export interface SingleQuestionDto {
   tags: string[];
   userId: number;
 }
+export interface QuestionVoteDto {
+  userId: number;
+  questionId: number;
+  voteType: 'UPVOTE' | 'DOWNVOTE';
+}
+
+export interface QuestionVoteStats {
+  upvotes: number;
+  downvotes: number;
+  score: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
+  getAllKnowledges() {
+    return this.http.get<any[]>(`${API_URL}/knowledge`);
+  }
+  
+  postKnowledge(payload: any) {
+    return this.http.post(`${API_URL}/knowledge`, payload);
+  }
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private getHeaders(): HttpHeaders {
+  public getHeaders(): HttpHeaders {
     return this.authService.getAuthHeaders();
   }
 
@@ -71,36 +93,36 @@ export class QuestionService {
     );
   }
 
-  // ✅ (Optional) Keep if you're still using this for answers
-  uploadImage(file: File, questionId: number): Observable<any> {
-    const url = `${API_URL}/image/question/${questionId}`;
-    const formData = new FormData();
-    formData.append('multipartFile', file);
   
-    // ✅ Allow browser to set content-type for FormData
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getAuthToken() || ''}`
-      // ⚠️ Do NOT set 'Content-Type' manually for FormData
-    });
-  
-    return this.http.post(url, formData, { headers }).pipe(
-      catchError(err => {
-        console.error('❌ Error uploading image:', err);
-        return throwError(() => new Error('Image upload failed'));
-      })
-    );
-  }
   
 
-  getAllQuestions(pageNumber: number): Observable<AllQuestionResponseDto> {
+  getAllQuestions(pageNumber: number, headers: HttpHeaders): Observable<AllQuestionResponseDto> {
     const url = `${API_URL}/questions/${pageNumber}`;
-    return this.http.get<AllQuestionResponseDto>(url, { headers: this.getHeaders() }).pipe(
+    return this.http.get<AllQuestionResponseDto>(url, { headers }).pipe(
       catchError(error => {
         console.error('❌ Error fetching all questions', error);
         return throwError(() => new Error('Erreur lors de la récupération des questions.'));
       })
     );
   }
+
+  getAllQuestionsSorted(page: number, size: number, headers: HttpHeaders): Observable<AllQuestionResponseDto> {
+    
+    // Ensure the page and size parameters are correctly passed in the URL
+    const url = `${API_URL}/questions/all/${page}/${size}`;  
+    // Making the HTTP GET request to the backend with the appropriate headers
+    return this.http.get<AllQuestionResponseDto>(url, { headers }).pipe(
+      catchError(error => {
+        console.error('❌ Error fetching all questions', error);  // Log the error for debugging
+        // Return an observable with an error message if the request fails
+        return throwError(() => new Error('Erreur lors de la récupération des questions.'));
+      })
+    );
+  }
+  
+  
+  
+  
 
   getQuestionById(userId: number, questionId: number): Observable<SingleQuestionDto> {
     const url = `${API_URL}/question/${userId}/${questionId}`;
@@ -130,5 +152,47 @@ export class QuestionService {
       })
     );
   }
+  voteQuestion(vote: QuestionVoteDto): Observable<any> {
+    const url = `${API_URL}/question/vote`;
+    return this.http.post(url, vote, {
+      headers: this.getHeaders()  // ✅ token ici
+    }).pipe(
+      catchError(error => {
+        console.error('❌ Error voting on question', error);
+        return throwError(() => new Error('Erreur lors du vote.'));
+      })
+    );
+  }
   
+  getQuestionVotes(questionId: number): Observable<QuestionVoteStats> {
+    const url = `${API_URL}/question/${questionId}/votes`;
+    return this.http.get<QuestionVoteStats>(url, {
+      headers: this.getHeaders()  // ✅ token ici aussi
+    }).pipe(
+      catchError(error => {
+        console.error(`❌ Error fetching vote stats for question ${questionId}`, error);
+        return throwError(() => new Error('Erreur lors de la récupération des votes'));
+      })
+    );
+  }
+  
+
+  // knowledge api 
+  // question.service.ts or knowledge.service.ts
+voteKnowledge(payload: {
+  userId: number;
+  knowledgeId: number;
+  voteType: 'UPVOTE' | 'DOWNVOTE';
+}) {
+  return this.http.post(`${API_URL}/knowledge/vote`, payload);
 }
+
+getKnowledgeVotes(knowledgeId: number) {
+  return this.http.get<{ score: number }>(`${API_URL}/knowledge/${knowledgeId}/votes`);
+}
+
+}
+  
+  
+  
+

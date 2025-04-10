@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tn.capgemini.stackquestion.dto.QuestionVoteDto;
+import tn.capgemini.stackquestion.entities.Question;
+import tn.capgemini.stackquestion.services.question.QuestionService;
+import tn.capgemini.stackquestion.services.question.QuestionServiceImpl;
 import tn.capgemini.stackquestion.services.vote.VoteService;
+import tn.capgemini.stackquestion.services.vote.VoteServiceImpl;
 
 @RestController
 @RequestMapping("/api")
@@ -17,11 +21,13 @@ import tn.capgemini.stackquestion.services.vote.VoteService;
 public class VoteController {
 
     @Autowired
-    VoteService voteService;
+    VoteServiceImpl voteService;
+    @Autowired
+    QuestionServiceImpl questionService;
 
     @PostMapping("/vote")
-    public ResponseEntity<?> addVoteToQuestion(@RequestBody QuestionVoteDto questionVoteDto){
-        QuestionVoteDto questionVotedDto = voteService.addVoteToQuestion(questionVoteDto);
+    public ResponseEntity<?> addVoteToQuestion(@RequestBody QuestionVoteDto question){
+        QuestionVoteDto questionVotedDto = voteService.addVoteToQuestion(question);
         if(questionVotedDto == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong!");
         }else{

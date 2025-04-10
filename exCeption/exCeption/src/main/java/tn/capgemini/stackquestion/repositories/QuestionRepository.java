@@ -7,8 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import tn.capgemini.stackquestion.entities.Question;
 
+import java.util.Optional;
+
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Page<Question> findAllByUser (int user_id, Pageable pageable);
+    Optional<Question> findByTitleIgnoreCase(String title);
+
 
 }

@@ -27,27 +27,34 @@ export class UserManagementComponent implements OnInit {
   loadUsers() {
     this.authService.getAllUsers().subscribe(
       (data: any[]) => {
+        console.log('Réponse complète de l\'API des utilisateurs:', JSON.stringify(data, null, 2)); // Affichage détaillé de la réponse
+  
+        // Essayer de visualiser la structure de la réponse
+        console.log('Structure de la première entrée dans la réponse API:', data[0]);
+  
+        // Vérification de la première entrée dans la réponse
         this.users = data.map(user => ({
-          userId: user.userId,
-          name: user.name,
-          email: user.email,
-          phone: user.phone || '',
-          dateNaissance: user.dateNaissance || '',
-          typeUser: user.typeUser,
+          userId: user.userId,    // Assurez-vous que 'userId' est bien défini
+          name: user.name,        // Assurez-vous que 'name' est bien défini
+          email: user.email,      // Vérifiez 'email'
+          phone: user.phone || '',// Vérifiez 'phone'
+          dateNaissance: user.dateNaissance || '', // Vérifiez 'dateNaissance'
+          typeUser: user.typeUser, 
           createdAt: user.createdAt,
           updatedAt: user.updatedAt
         }));
-        this.filteredUsers = [...this.users]; // Mise à jour de l'affichage
+  
+        console.log('Utilisateurs récupérés:', this.users); // Log après mappage
+        this.filteredUsers = [...this.users]; // Mise à jour de filteredUsers
       },
       (error: any) => {
-        console.error("Erreur :", error);
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
       }
-      
     );
   }
-
-  // ✅ Filtrer les utilisateurs
+  
   filterUsers() {
+    console.log('Recherche en cours avec le terme:', this.searchTerm); // Log du terme de recherche
     this.filteredUsers = this.users.filter(user =>
       user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -55,7 +62,10 @@ export class UserManagementComponent implements OnInit {
       user.dateNaissance.includes(this.searchTerm) ||
       user.updatedAt.includes(this.searchTerm)
     );
+    console.log('Utilisateurs filtrés:', this.filteredUsers); // Log de filteredUsers après filtrage
   }
+  
+  
 
   deleteUser(userId: number) {
     if (confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ID ${userId} ?`)) {
