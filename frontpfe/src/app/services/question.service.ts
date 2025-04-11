@@ -191,6 +191,26 @@ getKnowledgeVotes(knowledgeId: number) {
   return this.http.get<{ score: number }>(`${API_URL}/knowledge/${knowledgeId}/votes`);
 }
 
+
+getAllQuestionsByUser(userId: number, page: number): Observable<any> {
+  return this.http.get(`${API_URL}/questions/${userId}/${page}`, {
+    headers: this.getHeaders()
+  });
+}
+
+deleteQuestion(questionId: number): Observable<any> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userId = user?.id;
+  return this.http.delete(`${API_URL}/${questionId}?userId=${userId}`, {
+    headers: this.getHeaders()
+  });
+}
+
+updateQuestion(questionId: number, updatedData: Partial<QuestionDTO>): Observable<any> {
+  return this.http.put(`${API_URL}/${questionId}`, updatedData, {
+    headers: this.getHeaders()
+  });
+}
 }
   
   

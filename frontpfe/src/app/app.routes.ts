@@ -7,6 +7,7 @@ import { UserManagementComponent } from './pages/admin-dashboard/user-management
 import { AuthGuard } from './guards/auth.guard';
 import { TrendingComponent } from './pages/trending/trending.component';
 import { UsersComponent } from './components/users/users.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 export const routes: Routes = [
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'main', component: MainComponent},
     { path: 'trending', component: TrendingComponent },
     {path:'users',component:UsersComponent},
+    {path:'me',component:ProfileComponent},
 
     // Dashboard Admin avec User Management
     { 
