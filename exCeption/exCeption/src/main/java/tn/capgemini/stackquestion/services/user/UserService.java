@@ -13,4 +13,5 @@ public interface UserService {
      Optional<UserDTO> getUserById(Integer id); // Récupérer un utilisateur par ID
      UserDTO updateUser(Integer id, SignupDTO signupDTO); // Modifier un utilisateur
      boolean deleteUser(Integer id); // Supprimer un utilisateur
+     boolean isUserActive(Integer id);
 }

@@ -22,4 +22,6 @@ public interface QuestionService {
     QuestionVoteDto voteQuestion(int userId, int questionId, VoteType voteType);
 
     Map<String, Integer> getQuestionVoteStats(int questionId);
+    QuestionDTO updateQuestion(int questionId, QuestionDTO updatedQuestionDto);
+    void deleteQuestion(int questionId, int userId);
 }

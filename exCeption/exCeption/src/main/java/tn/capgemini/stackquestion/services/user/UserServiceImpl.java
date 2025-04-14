@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tn.capgemini.stackquestion.dto.SignupDTO;
 import tn.capgemini.stackquestion.dto.UserDTO;
 import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.enums.Status;
 import tn.capgemini.stackquestion.entities.enums.typeUser;
 import tn.capgemini.stackquestion.repositories.UserRepository;
 
@@ -78,20 +79,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> getUserById(Integer id) {
-        User adminUser = getAuthenticatedUser();
-        if (adminUser.getTypeUser() != typeUser.ADMIN) {
-            throw new RuntimeException("Accès refusé : Seul un ADMIN peut voir les détails d'un utilisateur !");
-        }
+
         return userRepository.findById(id).map(User::mapUserToUserDTO);
     }
 
     @Transactional
     @Override
     public UserDTO updateUser(Integer id, SignupDTO signupDTO) {
-        User adminUser = getAuthenticatedUser();
-        if (adminUser.getTypeUser() != typeUser.ADMIN) {
-            throw new RuntimeException("Accès refusé : Seul un ADMIN peut modifier un utilisateur !");
-        }
+
 
         return userRepository.findById(id).map(user -> {
             user.setName(signupDTO.getName());
@@ -101,6 +96,8 @@ public class UserServiceImpl implements UserService {
             if (signupDTO.getPassword() != null && !signupDTO.getPassword().isEmpty()) {
                 user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));
             }
+            user.setDepartement(signupDTO.getDepartement());
+            user.setProjet(signupDTO.getProjet());
             userRepository.save(user);
             return user.mapUserToUserDTO();
         }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
@@ -109,10 +106,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean deleteUser(Integer id) {
-        User adminUser = getAuthenticatedUser();
-        if (adminUser.getTypeUser() != typeUser.ADMIN) {
-            throw new RuntimeException("Accès refusé : Seul un ADMIN peut supprimer un utilisateur !");
-        }
+
 
         if (userRepository.existsById(id)) { // ✅ Vérifie si l'utilisateur existe
             userRepository.deleteById(id);
@@ -120,6 +114,23 @@ public class UserServiceImpl implements UserService {
         } else {
             return false; // ❌ Retourne FALSE si l'utilisateur n'existe pas
         }
+    }
+
+
+
+    public User getUserEntityById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+    @Override
+    public boolean isUserActive(Integer userId) {
+        return userRepository.findById(userId)
+                .map(user -> user.getStatus() == Status.ACTIVE)
+                .orElse(false);
     }
 
 }

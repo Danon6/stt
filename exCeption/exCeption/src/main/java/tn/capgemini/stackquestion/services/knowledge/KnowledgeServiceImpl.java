@@ -119,5 +119,47 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
         return stats;
     }
+    @Override
+    public KnowledgeDTO updateKnowledge(Integer id, KnowledgeDTO updatedDTO) {
+        Knowledge existing = knowledgeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Knowledge not found"));
+
+        if (!existing.getUser().getUser_id().equals(updatedDTO.getUserId())) {
+            throw new RuntimeException("Unauthorized: You can only update your own knowledge.");
+        }
+
+        existing.setTitle(updatedDTO.getTitle());
+        existing.setDescription(updatedDTO.getDescription());
+        existing.setContent(updatedDTO.getContent());
+        existing.setDepartement(updatedDTO.getDepartement());
+        existing.setProjet(updatedDTO.getProjet());
+
+        if (updatedDTO.getImageBase64() != null && updatedDTO.getImageBase64().contains(",")) {
+            String[] imgParts = updatedDTO.getImageBase64().split(",", 2);
+            existing.setImage(Base64.getDecoder().decode(imgParts[1]));
+            existing.setImageType(updatedDTO.getImageType());
+        }
+
+        if (updatedDTO.getFileBase64() != null && updatedDTO.getFileBase64().contains(",")) {
+            String[] fileParts = updatedDTO.getFileBase64().split(",", 2);
+            existing.setFile(Base64.getDecoder().decode(fileParts[1]));
+            existing.setFileType(updatedDTO.getFileType());
+        }
+
+        Knowledge saved = knowledgeRepository.save(existing);
+        return saved.toDTO();
+    }
+
+    @Override
+    public void deleteKnowledge(Integer id, Integer userId) {
+        Knowledge knowledge = knowledgeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Knowledge not found"));
+
+        if (!knowledge.getUser().getUser_id().equals(userId)) {
+            throw new RuntimeException("Unauthorized: You can only delete your own knowledge.");
+        }
+
+        knowledgeRepository.delete(knowledge);
+    }
 
 }

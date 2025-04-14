@@ -150,7 +150,9 @@ public class QuestionServiceImpl implements  QuestionService{
     @Override
     public AllQuestionResponseDto getAllQuestionsByUserId(int userId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, SEARCH_RESULT_PER_PAGE);
-        Page<Question> questionsPage =  questionRepository.findAllByUser(userId, paging);
+        Optional<User> user = userRepository.findById(userId);
+
+        Page<Question> questionsPage =  questionRepository.findAllByUser(user.get(), paging);
 
         AllQuestionResponseDto allQuestionResponseDto = new AllQuestionResponseDto();
 
@@ -216,6 +218,53 @@ public class QuestionServiceImpl implements  QuestionService{
         return stats;
     }
 
+    @Override
+    public QuestionDTO updateQuestion(int questionId, QuestionDTO updatedQuestionDto) {
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Optional<User> optionalUser = userRepository.findById(updatedQuestionDto.getUserId());
+
+        if (optionalQuestion.isEmpty()) {
+            throw new RuntimeException("Question not found");
+        }
+
+
+
+        Question question = optionalQuestion.get();
+
+
+
+        question.setTitle(updatedQuestionDto.getTitle());
+        question.setBody(updatedQuestionDto.getBody());
+        question.setDepartement(updatedQuestionDto.getDepartement());
+        question.setProjet(updatedQuestionDto.getProjet());
+        question.setTags(updatedQuestionDto.getTags());
+
+        Question updated = questionRepository.save(question);
+        return updated.getQuestionDto();
+    }
+
+
+    @Override
+    public void deleteQuestion(int questionId, int userId) {
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalQuestion.isEmpty()) {
+            throw new RuntimeException("Question not found");
+        }
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        Question question = optionalQuestion.get();
+
+        if (!question.getUser().getUser_id().equals(userId)) {
+            throw new RuntimeException("⚠️ You are not allowed to delete this question.");
+        }
+
+        questionRepository.deleteById(questionId);
+    }
 
 
 

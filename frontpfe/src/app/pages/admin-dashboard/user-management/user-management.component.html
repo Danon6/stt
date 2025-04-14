@@ -32,6 +32,26 @@
                         <button class="edit-btn" (click)="editUser(user)"><i class="fas fa-edit"></i></button>
                         <button class="delete-btn" (click)="deleteUser(user.userId)"><i class="fas fa-trash-alt"></i></button>
                     </td>
+                    <td class="actions">
+                        <button class="edit-btn" (click)="editUser(user)">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" (click)="deleteUser(user.userId)">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      
+                        <!-- Ban/Unban toggle -->
+                        <label class="ban-toggle">
+                          <input 
+                            type="checkbox" 
+                            [checked]="user.status === 'ACTIVE'" 
+                            (change)="toggleBan(user)" />
+                          <span class="toggle-label">
+                            {{ user.status === 'ACTIVE' ? '✅ Active' : '🚫 Banned' }}
+                          </span>
+                        </label>
+                      </td>
+                      
                 </tr>
             </tbody>
         </table>

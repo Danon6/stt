@@ -12,6 +12,7 @@ import tn.capgemini.stackquestion.dto.QuestionVoteDto;
 import tn.capgemini.stackquestion.dto.SingleQuestionDto;
 import tn.capgemini.stackquestion.services.question.QuestionService;
 import tn.capgemini.stackquestion.services.question.QuestionServiceImpl;
+import tn.capgemini.stackquestion.services.user.UserService;
 
 @RestController
 @RequestMapping("/api")
@@ -23,9 +24,14 @@ public class QuestionController {
     QuestionService questionService;
     @Autowired
     QuestionServiceImpl questionServiceImpl;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/question")
     public ResponseEntity<?> postQuestion(@RequestBody QuestionDTO questionDto){
+        if (!userService.isUserActive(questionDto.getUserId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is not active.");
+        }
         QuestionDTO createdQuestionDto = questionService.addQuestion(questionDto);
 
         if (createdQuestionDto == null){
@@ -65,6 +71,9 @@ public class QuestionController {
     }
     @PostMapping("/question/vote")
     public ResponseEntity<?> voteQuestion(@RequestBody QuestionVoteDto voteDto) {
+        if (!userService.isUserActive(voteDto.getUserId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is not active.");
+        }
         QuestionVoteDto result = questionServiceImpl.voteQuestion(
                 voteDto.getUserId(),
                 voteDto.getQuestionId(),
@@ -82,6 +91,18 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestionVoteStats(questionId));
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<QuestionDTO> updateQuestion(@PathVariable int id, @RequestBody QuestionDTO dto) {
+        QuestionDTO updated = questionService.updateQuestion(id, dto);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteQuestion(@PathVariable int id, @RequestParam("userId") int userId) {
+        questionService.deleteQuestion(id, userId);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

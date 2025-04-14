@@ -13,4 +13,6 @@ public class SignupDTO {
     private String phone;
     private Date date;
     private typeUser typeUser;
+    private String departement;
+    private String projet;
 }

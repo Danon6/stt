@@ -7,7 +7,16 @@
     <nav class="admin-menu">
         <button (click)="toggleUserManagement()" class="active">User Management</button>
     </nav>
+    <nav class="admin-menu">
+        <button (click)="toggleQuestionsManagement()" class="active">Questions Management</button>
+    </nav>
+    <nav class="admin-menu">
+        <button (click)="toggleKnowledgesManagement()" class="active">Knowledges Management</button>
+    </nav>
 
     <!-- Affichage conditionnel de User Management -->
     <app-user-management *ngIf="showUserManagement"></app-user-management>
+    <app-questions-management *ngIf="showQuestionsManagement"></app-questions-management>
+    <app-knowledges-management *ngIf="showKnowledgesManagement"></app-knowledges-management>
+
 </div>

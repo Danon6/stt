@@ -91,3 +91,17 @@ td:last-child {
 .delete-btn:hover {
     color: darkred;
 }
+
+
+.ban-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  
+  .ban-toggle input[type="checkbox"] {
+    transform: scale(1.2);
+  }
+  

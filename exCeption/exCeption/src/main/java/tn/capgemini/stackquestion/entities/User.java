@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import tn.capgemini.stackquestion.dto.UserDTO;
+import tn.capgemini.stackquestion.entities.enums.Status;
 import tn.capgemini.stackquestion.entities.enums.typeUser;
 
 import java.util.Date;
@@ -30,10 +31,13 @@ public class User {
     private Date dateNaissance;
     @Enumerated(EnumType.STRING)
     private typeUser typeUser;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Knowledge> knowledgeList;
-
+    private String departement;
+    private String projet;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -43,7 +47,7 @@ public class User {
     private Date updatedAt;
 
     public UserDTO mapUserToUserDTO() {
-        return new UserDTO(this.user_id, this.name, this.email, this.phone, this.dateNaissance, this.typeUser,this.createdAt,this.updatedAt);
+        return new UserDTO(this.user_id, this.name, this.email, this.phone, this.dateNaissance, this.typeUser,this.createdAt,this.updatedAt,this.departement, this.projet,this.status );
     }
 
 

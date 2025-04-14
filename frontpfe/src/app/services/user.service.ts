@@ -20,20 +20,14 @@ export class UserService {
   // Récupérer tous les utilisateurs
   getAllUsers(): Observable<any> {
     console.log('Envoi de la requête pour récupérer tous les utilisateurs');
-    return this.http.get(`${this.apiUrl}/all`, { headers: this.getAuthHeaders() })
-      .pipe(
-        map((response: any) => {
-          console.log('Réponse API (utilisateurs) reçue:', response); // Log de la réponse de l'API
-          return response.map((user: { id: number; username: string }) => ({
-            id: user.id,
-            username: user.username
-          }));
-        }),
-        catchError(error => {
-          console.error("❌ Erreur lors de la récupération des utilisateurs", error);
-          return throwError(() => new Error("Erreur serveur lors de la récupération des utilisateurs."));
-        })
-      );
+    return this.http.get<any[]>(`${this.apiUrl}/all`, { headers: this.getAuthHeaders() })
+  .pipe(
+    catchError(error => {
+      console.error("❌ Erreur lors de la récupération des utilisateurs", error);
+      return throwError(() => new Error("Erreur serveur lors de la récupération des utilisateurs."));
+    })
+  );
+
   }
 
   // Récupérer un utilisateur par ID
@@ -82,4 +76,17 @@ export class UserService {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     return user;  // Cette méthode renvoie l'objet utilisateur avec id, username, etc.
   }
+
+  banUser(userId: number) {
+    return this.http.put(`http://localhost:8080/api/user/ban/${userId}`, {}, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  
+  unbanUser(userId: number) {
+    return this.http.put(`http://localhost:8080/api/user/unban/${userId}`, {}, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  
 }

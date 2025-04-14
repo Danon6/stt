@@ -22,6 +22,7 @@ export class UserManagementComponent implements OnInit {
   ngOnInit() {
     this.loadUsers();
   }
+  
 
   // ✅ Récupérer tous les utilisateurs du backend
   loadUsers() {
@@ -41,7 +42,9 @@ export class UserManagementComponent implements OnInit {
           dateNaissance: user.dateNaissance || '', // Vérifiez 'dateNaissance'
           typeUser: user.typeUser, 
           createdAt: user.createdAt,
-          updatedAt: user.updatedAt
+          updatedAt: user.updatedAt,
+          status: user.status || 'ACTIVE'
+
         }));
   
         console.log('Utilisateurs récupérés:', this.users); // Log après mappage
@@ -61,8 +64,23 @@ export class UserManagementComponent implements OnInit {
       user.phone.includes(this.searchTerm) ||
       user.dateNaissance.includes(this.searchTerm) ||
       user.updatedAt.includes(this.searchTerm)
+      
     );
     console.log('Utilisateurs filtrés:', this.filteredUsers); // Log de filteredUsers après filtrage
+  }
+  toggleBan(user: any) {
+    const action = user.status === 'ACTIVE' ? this.authService.banUser(user.userId) : this.authService.unbanUser(user.userId);
+  
+    action.subscribe({
+      next: () => {
+        user.status = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+        alert(`✅ L'utilisateur ${user.name} est maintenant ${user.status === 'INACTIVE' ? 'banni' : 'actif'}.`);
+      },
+      error: (err) => {
+        console.error('❌ Erreur lors du changement de statut:', err);
+        alert('Erreur serveur lors du changement de statut');
+      }
+    });
   }
   
   

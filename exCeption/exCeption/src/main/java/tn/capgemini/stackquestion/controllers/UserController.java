@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.capgemini.stackquestion.dto.SignupDTO;
 import tn.capgemini.stackquestion.dto.UserDTO;
+import tn.capgemini.stackquestion.entities.User;
+import tn.capgemini.stackquestion.entities.enums.Status;
 import tn.capgemini.stackquestion.services.user.UserServiceImpl;
 import java.util.Map;
 import java.util.HashMap;
@@ -87,6 +89,37 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PutMapping("/ban/{id}")
+    public ResponseEntity<?> banUser(@PathVariable int id) {
+        try {
+            User user = userService.getUserEntityById(id); // ⚠️ Make sure getUserEntityById exists in your service and returns a `User` object
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé !");
+            }
+
+            user.setStatus(Status.INACTIVE);
+            userService.save(user); // Or userRepository.save(user); depending on how your service is structured
+
+            return ResponseEntity.ok("✅ Utilisateur banni avec succès !");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/unban/{id}")
+    public ResponseEntity<?> unbanUser(@PathVariable int id) {
+        try {
+            User user = userService.getUserEntityById(id);
+            user.setStatus(Status.ACTIVE);
+            userService.save(user);
+            return ResponseEntity.ok("✅ Utilisateur réactivé !");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur : " + e.getMessage());
+        }
+    }
+
 
 
 }

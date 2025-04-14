@@ -44,12 +44,99 @@
               <p class="text-sm font-medium text-gray-500">Member Since</p>
               <p class="text-base text-gray-800">{{ userProfile.createdAt | date: 'medium' }}</p>
             </div>
+            
+          </div>
+          <div class="flex items-center">
+            <div class="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-indigo-50 text-indigo-600">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Projet</p>
+              <p class="text-base text-gray-800">{{ userProfile.projet || 'N/A' }}</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-indigo-50 text-indigo-600">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Departement</p>
+              <p class="text-base text-gray-800">{{ userProfile.departement || 'N/A' }}</p>
+            </div>
           </div>
         </div>
+        <button
+    class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-black rounded shadow"
+    (click)="openProfileEditModal()"
+  >
+    ✏️ Modify Profile
+  </button>
       </div>
     </div>
+    <!-- Profile Edit Modal -->
+<div *ngIf="showProfileEditModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+      <h3 class="text-xl font-bold mb-4 text-indigo-700">📝 Edit Profile</h3>
+  
+      <form (ngSubmit)="submitProfileEdit()" #form="ngForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Name</label>
+          <input [(ngModel)]="editProfileForm.name" name="name" required class="input" />
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input [(ngModel)]="editProfileForm.email" name="email" type="email" required class="input" />
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium mb-1">Phone</label>
+          <input [(ngModel)]="editProfileForm.phone" name="phone" class="input" />
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium mb-1">Departement</label>
+          <input [(ngModel)]="editProfileForm.departement" name="departement" class="input" />
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium mb-1">Projet</label>
+          <input [(ngModel)]="editProfileForm.projet" name="projet" class="input" />
+        </div>
+  
+        <div class="flex justify-end gap-3 pt-4">
+          <button type="button" (click)="closeProfileEditModal()" class="px-4 py-2 bg-gray-300 rounded">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+  
+  <!-- Tabs -->
+<div class="flex gap-4 mb-6">
+    <button (click)="switchTab('questions')"
+      [class]="selectedTab === 'questions' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'"
+      class="px-4 py-2 rounded-md font-semibold transition hover:bg-blue-700">
+      📋 My Questions
+    </button>
+  
+    <button (click)="switchTab('knowledge')"
+      [class]="selectedTab === 'knowledge' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-800'"
+      class="px-4 py-2 rounded-md font-semibold transition hover:bg-green-700">
+      🧠 My Knowledges
+    </button>
+  </div>
+  
     
     <!-- Questions Section -->
+    <div *ngIf="selectedTab === 'questions'" class="bg-white shadow-lg rounded-xl p-6">
+
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between p-6 border-b border-gray-100">
         <h2 class="text-xl font-semibold text-gray-900">My Questions</h2>
@@ -121,8 +208,65 @@
         </div>
       </div>
     </div>
+</div>
+<div *ngIf="selectedTab === 'knowledge'" class="bg-white shadow-lg rounded-xl p-6">
+    <h2 class="text-xl font-semibold mb-4 text-green-700">🧠 My Knowledges</h2>
+  
+    <div *ngIf="userKnowledges.length === 0" class="text-gray-400 italic">
+      No knowledge shared yet.
+    </div>
+  
+    <div *ngFor="let k of userKnowledges" class="mb-4 p-4 border rounded bg-green-50">
+      <h3 class="text-lg font-bold text-green-900">{{ k.title }}</h3>
+      <p class="text-gray-700 italic">{{ k.description }}</p>
+      <p class="mt-2 text-gray-800">{{ k.content }}</p>
+  
+      <div *ngIf="k.imageBase64" class="mt-2">
+        <img [src]="k.imageBase64" alt="Knowledge Image" class="max-w-full rounded shadow" />
+      </div>
+  
+      <div *ngIf="k.fileBase64" class="mt-2">
+        <a [href]="k.fileBase64" download target="_blank"
+          class="text-sm text-blue-600 underline hover:text-blue-800 font-semibold">📄 Download Attached File</a>
+      </div>
+  
+      <div class="text-sm text-gray-500 mt-2">
+        🗓 {{ k.createdDate | date: 'medium' }}<br />
+        📁 {{ k.departement }} | 📌 {{ k.projet }}
+      </div>
+      <div class="mt-3 flex gap-3">
+        <button (click)="editKnowledge(k)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+          ✏️ Modify
+        </button>
+        <button (click)="deleteKnowledge(k.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+          🗑 Delete
+        </button>
+      </div>
+      <div *ngIf="showEditKnowledgeModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+          <h3 class="text-xl font-bold mb-4 text-blue-700">Edit Knowledge</h3>
+      
+          <form (submit)="submitEditKnowledge(); $event.preventDefault()">
+            <input type="text" [(ngModel)]="knowledgeEditForm.title" name="title" class="form-input mb-2 w-full" placeholder="Title" required>
+            <input type="text" [(ngModel)]="knowledgeEditForm.description" name="description" class="form-input mb-2 w-full" placeholder="Description" required>
+            <textarea [(ngModel)]="knowledgeEditForm.content" name="content" class="form-textarea mb-2 w-full" rows="4" placeholder="Content" required></textarea>
+            <input type="text" [(ngModel)]="knowledgeEditForm.departement" name="departement" class="form-input mb-2 w-full" placeholder="Departement" required>
+            <input type="text" [(ngModel)]="knowledgeEditForm.projet" name="projet" class="form-input mb-4 w-full" placeholder="Projet" required>
+      
+            <div class="flex justify-end gap-3">
+              <button type="button" (click)="closeKnowledgeModal()" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+              <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
   </div>
 </div>
+
 
 <!-- Edit Question Modal -->
 <div *ngIf="showEditModal" class="fixed inset-0 overflow-y-auto z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
