@@ -2,51 +2,11 @@
 <app-main-navbar></app-main-navbar>
 <!-- ✅ Tabs -->
 
-<div class="layout">
-  <!-- ✅ Sidebar -->
-  <aside class="sidebar">
-    <nav>
-      <ul class="top-menu">
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Home</span>
-            <img src="home-button.png" alt="Home" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <!-- Utilisation de la méthode onTrendingClick pour naviguer -->
-          <button (click)="onTrendingClick($event)" class="highlight flex items-center">
-            <span class="icon material-icons">Trending_up</span>
-            <img src="up-arrow.png" alt="Trending Up" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </button>
-        </li>
-        <!--  -->
-        
-      </ul>
-      <hr class="sidebar-divider" />
-      <ul class="bottom-menu">
-        <li>
-          <a class="highlight flex items-center" (click)="onQuestionsClick($event)">
-            <span class="icon material-icons">Questions</span>
-            <img src="inquiry.png" alt="Questions" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        
-        <li>
-          <a href="users" class="highlight flex items-center">
-            <span class="icon material-icons">Users</span>
-            <img src="profile.png" alt="Users" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Companies</span>
-            <img src="building.png" alt="Companies" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </aside>
+<div class="bg-gray-100 min-h-screen dark:bg-gray-900 layout">
+  <div class="container mx-auto flex max-w-6xl">  <!-- ✅ Sidebar -->
+  <app-sidebar>
+</app-sidebar>
+
 
   <!-- ✅ Main content area -->
   <main class="content">
@@ -397,4 +357,5 @@
     </div>
 
   </main>
+  </div>
 </div>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MainNavbarComponent } from '../main-navbar/main-navbar.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-users',
@@ -10,7 +11,8 @@ import { MainNavbarComponent } from '../main-navbar/main-navbar.component';
   imports: [
     CommonModule,
     FormsModule,
-    MainNavbarComponent
+    MainNavbarComponent,
+    SidebarComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'

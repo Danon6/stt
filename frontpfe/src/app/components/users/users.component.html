@@ -1,84 +1,15 @@
 <app-main-navbar></app-main-navbar>
-
-<div class="layout">
+<div class="bg-gray-100 min-h-screen dark:bg-gray-900 layout">
+  <div class="container mx-auto flex max-w-6xl">  <!-- ✅ Sidebar -->
+<app-sidebar>
+</app-sidebar>
   <!-- Sidebar Section -->
-  <aside class="sidebar">
-    <nav>
-      <!-- Top Menu -->
-      <ul class="top-menu">
-        <li>
-          <a routerLink="/main" class="highlight flex items-center">
-            <span class="icon material-icons">Home</span>
-            <img src="home-button.png" alt="Home" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a href="trending" class="highlight flex items-center">
-            <span class="icon material-icons">Trending_up</span>
-            <img src="up-arrow.png" alt="Trending Up" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-      </ul>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider" />
-      <ul class="bottom-menu">
-        <li>
-          <a class="highlight flex items-center" href="main">
-            <span class="icon material-icons">Questions</span>
-            <img src="inquiry.png" alt="Questions" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        
-        <li>
-          <a href="users" class="highlight flex items-center">
-            <span class="icon material-icons">Users</span>
-            <img src="profile.png" alt="Users" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Companies</span>
-            <img src="building.png" alt="Companies" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-      </ul>
-      <!-- Bottom Menu -->
-      <!-- <ul class="bottom-menu">
-        <li>
-          <a  (click)="onQuestionsClick()">
-            <span class="icon material-icons">Questions</span>
-            <img src="inquiry.png" alt="Questions" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Tags</span>
-            <img src="tag.png" alt="Tags" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Users</span>
-            <img src="profile.png" alt="Users" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Companies</span>
-            <img src="building.png" alt="Companies" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-      </ul> -->
-    </nav>
-  </aside>
+  
   <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
     <!-- Header and Search -->
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-4 sm:mb-0">
-          Members 
-        </h1>
+        
 
         <!-- Search Bar -->
         <div class="w-full sm:w-72 relative">
@@ -211,4 +142,5 @@
       </nav>
     </div>
   </div>
+</div>
 </div>

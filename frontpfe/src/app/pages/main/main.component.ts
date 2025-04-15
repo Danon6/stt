@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-main',
@@ -20,6 +21,7 @@ import { map } from 'rxjs/operators';
     FormsModule,
     CommonModule,
     MainNavbarComponent,
+    SidebarComponent
   ]
 })
 export class MainComponent implements OnInit {

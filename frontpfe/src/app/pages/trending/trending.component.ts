@@ -5,13 +5,14 @@ import { MainNavbarComponent } from '../../components/main-navbar/main-navbar.co
 import { QuestionService } from '../../services/question.service';
 import { forkJoin, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-trending',
   templateUrl: './trending.component.html',
   styleUrls: ['./trending.component.scss'],
   standalone: true,
-  imports: [MainNavbarComponent, CommonModule],
+  imports: [MainNavbarComponent, CommonModule,SidebarComponent],
 })
 export class TrendingComponent implements OnInit {
   questions: any[] = [];
