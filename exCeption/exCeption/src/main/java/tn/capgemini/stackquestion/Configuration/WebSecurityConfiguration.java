@@ -41,6 +41,8 @@ public class WebSecurityConfiguration {
                         .requestMatchers(("/api/knowledge/**")).permitAll()
                         .requestMatchers("/api/user/all").permitAll()
                         .requestMatchers("/api/questions/**").permitAll()
+                        .requestMatchers("/api/question/**").permitAll()
+
                         .requestMatchers("/api/delete/**").permitAll()
                         .requestMatchers("api/user/**").permitAll()
                         .requestMatchers("/api/image/question/**").permitAll()
