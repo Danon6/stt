@@ -1,40 +1,62 @@
-<div class="p-6 bg-white rounded-xl shadow-md">
-    <h2 class="text-2xl font-bold text-green-700 mb-4">🧠 All Knowledges</h2>
+<div class="p-6 bg-white rounded-2xl shadow-lg max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-green-700 mb-6">🧠 All Knowledges</h2>
   
-    <div *ngIf="knowledges.length === 0" class="text-gray-500 italic">No knowledges available.</div>
+    <div *ngIf="knowledges.length === 0" class="text-gray-500 italic text-center py-10">
+      No knowledges available.
+    </div>
   
-    <div *ngFor="let k of knowledges" class="border p-4 mb-4 rounded-lg bg-green-50 shadow-sm">
-      <div class="flex justify-between items-start">
-        <div>
-          <h3 class="text-lg font-semibold text-gray-800">{{ k.title }}</h3>
-          <p class="text-sm text-gray-700 mt-1">{{ k.description }}</p>
-          <p class="text-xs text-gray-600 mt-1">{{ k.content }}</p>
-          <div class="text-xs text-gray-500 mt-2">
-            📁 {{ k.departement }} | 📌 {{ k.projet }} | 🗓 {{ k.createdDate | date }}
+    <div *ngFor="let k of knowledges" class="border border-green-200 p-6 mb-6 rounded-xl bg-green-50 hover:bg-green-100 transition-shadow shadow-sm">
+      <div class="flex justify-between items-start gap-4">
+        <!-- Info -->
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-green-800 mb-1">{{ k.title }}</h3>
+          <p class="text-sm text-gray-700 mb-2">{{ k.description }}</p>
+          <p class="text-sm text-gray-600 leading-relaxed">{{ k.content }}</p>
+          <div class="mt-4 text-xs text-gray-500 space-x-2">
+            <span class="bg-white px-2 py-1 rounded-full border border-green-200">📁 {{ k.departement }}</span>
+            <span class="bg-white px-2 py-1 rounded-full border border-green-200">📌 {{ k.projet }}</span>
+            <span class="bg-white px-2 py-1 rounded-full border border-green-200">🗓 {{ k.createdDate | date }}</span>
           </div>
         </div>
-        <div class="space-x-2">
-          <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded" (click)="editKnowledge(k)">✏️ Edit</button>
-          <button class="px-3 py-1 bg-red-600 text-white text-sm rounded" (click)="deleteKnowledge(k.id)">🗑 Delete</button>
+  
+        <!-- Actions -->
+        <div class="flex flex-col items-end space-y-2">
+          <button (click)="editKnowledge(k)" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm shadow">
+            ✏️ Edit
+          </button>
+          <button (click)="deleteKnowledge(k.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-md text-sm shadow">
+            🗑 Delete
+          </button>
         </div>
       </div>
     </div>
   
     <!-- Edit Modal -->
-    <div *ngIf="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
-        <h3 class="text-xl font-bold text-green-700 mb-4">Edit Knowledge</h3>
+    <div *ngIf="showEditModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+      <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6">
+        <h3 class="text-2xl font-bold text-green-700 mb-6">Edit Knowledge</h3>
   
-        <form (ngSubmit)="submitEdit()">
-          <input [(ngModel)]="editedKnowledge.title" name="title" required placeholder="Title" class="w-full border mb-3 px-3 py-2 rounded" />
-          <input [(ngModel)]="editedKnowledge.description" name="description" required placeholder="Description" class="w-full border mb-3 px-3 py-2 rounded" />
-          <textarea [(ngModel)]="editedKnowledge.content" name="content" rows="4" required placeholder="Content" class="w-full border mb-3 px-3 py-2 rounded"></textarea>
-          <input [(ngModel)]="editedKnowledge.departement" name="departement" placeholder="Departement" class="w-full border mb-3 px-3 py-2 rounded" />
-          <input [(ngModel)]="editedKnowledge.projet" name="projet" placeholder="Projet" class="w-full border mb-3 px-3 py-2 rounded" />
+        <form (ngSubmit)="submitEdit()" class="space-y-4">
+          <input [(ngModel)]="editedKnowledge.title" name="title" required placeholder="Title"
+            class="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-green-300" />
   
-          <div class="flex justify-end space-x-2">
-            <button type="button" (click)="closeModal()" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Save</button>
+          <input [(ngModel)]="editedKnowledge.description" name="description" required placeholder="Description"
+            class="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-green-300" />
+  
+          <textarea [(ngModel)]="editedKnowledge.content" name="content" rows="4" required placeholder="Content"
+            class="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-green-300"></textarea>
+  
+          <input [(ngModel)]="editedKnowledge.departement" name="departement" placeholder="Departement"
+            class="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-green-300" />
+  
+          <input [(ngModel)]="editedKnowledge.projet" name="projet" placeholder="Projet"
+            class="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-green-300" />
+  
+          <div class="flex justify-end space-x-3 pt-4">
+            <button type="button" (click)="closeModal()"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow">Cancel</button>
+            <button type="submit"
+              class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md shadow">Save</button>
           </div>
         </form>
       </div>

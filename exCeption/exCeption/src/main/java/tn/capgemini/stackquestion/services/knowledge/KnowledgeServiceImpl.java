@@ -124,9 +124,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         Knowledge existing = knowledgeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Knowledge not found"));
 
-        if (!existing.getUser().getUser_id().equals(updatedDTO.getUserId())) {
-            throw new RuntimeException("Unauthorized: You can only update your own knowledge.");
-        }
+
 
         existing.setTitle(updatedDTO.getTitle());
         existing.setDescription(updatedDTO.getDescription());

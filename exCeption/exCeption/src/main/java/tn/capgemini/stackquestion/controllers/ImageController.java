@@ -75,4 +75,19 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/image/question/update/{questionId}")
+    public ResponseEntity<Map<String, String>> updateQuestionImage(
+            @RequestParam("multipartFile") MultipartFile multipartFile,
+            @PathVariable int questionId) {
+        try {
+            // Store or overwrite image
+            imageService.updateQuestionImage(multipartFile, questionId);
+            return ResponseEntity.ok(Map.of("message", "✅ Image updated successfully"));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "❌ Failed to update image: " + e.getMessage()));
+        }
+    }
+
 }

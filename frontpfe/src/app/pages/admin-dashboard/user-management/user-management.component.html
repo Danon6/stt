@@ -1,80 +1,144 @@
-<div class="user-container">
-    <!-- Barre de recherche avec une meilleure visibilité -->
-    <div class="search-container">
-        <input type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="Chercher..." class="search-input">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- 🔍 Search -->
+    <div class="mb-6">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="🔍 Search users..."
+            class="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
     </div>
 
-    <!-- Tableau des utilisateurs -->
-    <div class="table-container">
-        <table>
-            <thead>
+    <!-- 👤 User Table -->
+    <div class="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
+        <table class="min-w-full text-sm text-left text-gray-700">
+            <thead class="bg-indigo-100 text-indigo-800 text-xs uppercase tracking-wider">
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Birthday Date</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th></th> <!-- ✅ Colonne pour les icônes -->
+                    <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Name</th>
+                    <th class="px-4 py-3">Email</th>
+                    <th class="px-4 py-3">Phone</th>
+                    <th class="px-4 py-3">Birthday</th>
+                    <th class="px-4 py-3">Created</th>
+                    <th class="px-4 py-3">Updated</th>
+                    <th class="px-4 py-3 text-center">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr *ngFor="let user of filteredUsers">
-                    <td><strong>{{ user.userId }}</strong></td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.phone }}</td>
-                    <td>{{ user.dateNaissance }}</td>
-                    <td>{{ user.createdAt }}</td>
-                    <td>{{ user.updatedAt }}</td>
-                    <td class="actions">
-                        <button class="edit-btn" (click)="editUser(user)"><i class="fas fa-edit"></i></button>
-                        <button class="delete-btn" (click)="deleteUser(user.userId)"><i class="fas fa-trash-alt"></i></button>
+            <tbody class="divide-y divide-gray-100">
+                <tr *ngFor="let user of filteredUsers" class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3 font-medium text-gray-800">{{ user.userId }}</td>
+                    <td class="px-4 py-3">{{ user.name }}</td>
+                    <td class="px-4 py-3">{{ user.email }}</td>
+                    <td class="px-4 py-3">{{ user.phone }}</td>
+                    <td class="px-4 py-3">{{ user.date| date:'MMM d, yyyy' }}</td>
+                    <td class="px-4 py-3">{{ user.createdAt | date:'MMM d, yyyy'}}</td>
+                    <td class="px-4 py-3">{{ user.updatedAt | date:'MMM d, yyyy'}}</td>
+                    <td class="px-4 py-3 text-center">
+                        <div class="flex items-center justify-center gap-3 flex-wrap">
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded"
+                                (click)="editUser(user)">
+                                ✏️ Edit
+                            </button>
+                            <button class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded"
+                                (click)="deleteUser(user.userId)">
+                                🗑 Block
+                            </button>
+
+                            <!-- 🚫 Ban Toggle -->
+                            <!-- Dynamic Toggle Switch -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-semibold" [ngClass]="{
+        'text-green-600': user.status === 'ACTIVE',
+        'text-red-500': user.status !== 'ACTIVE'
+      }">
+                                    {{ user.status === 'ACTIVE' ? 'Active' : 'Banned' }}
+                                </span>
+
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" [checked]="user.status === 'ACTIVE'"
+                                        (change)="toggleBan(user)">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-offset-2 peer-focus:ring-indigo-500 
+               rounded-full peer peer-checked:bg-green-500 transition-colors duration-300">
+                                    </div>
+                                    <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full 
+               transition-transform duration-300 transform peer-checked:translate-x-full">
+                                    </div>
+                                </label>
+                            </div>
+
+                        </div>
                     </td>
-                    <td class="actions">
-                        <button class="edit-btn" (click)="editUser(user)">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-btn" (click)="deleteUser(user.userId)">
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
-                      
-                        <!-- Ban/Unban toggle -->
-                        <label class="ban-toggle">
-                          <input 
-                            type="checkbox" 
-                            [checked]="user.status === 'ACTIVE'" 
-                            (change)="toggleBan(user)" />
-                          <span class="toggle-label">
-                            {{ user.status === 'ACTIVE' ? '✅ Active' : '🚫 Banned' }}
-                          </span>
-                        </label>
-                      </td>
-                      
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Formulaire de modification -->
-    <div class="edit-form-container" *ngIf="showEditForm">
-        <h3>Modifier l'utilisateur</h3>
-        <label>Nom :</label>
-        <input type="text" [(ngModel)]="editedUser.name">
-
-        <label>E-mail :</label>
-        <input type="email" [(ngModel)]="editedUser.email">
-
-        <label>Numéro de téléphone :</label>
-        <input type="text" [(ngModel)]="editedUser.phone">
-
-        <label>Date de naissance :</label>
-        <input type="date" [(ngModel)]="editedUser.dateNaissance">
-
-        <div class="edit-buttons">
-            <button (click)="saveChanges()" class="save-btn">Enregistrer</button>
-            <button (click)="cancelEdit()" class="cancel-btn">Annuler</button>
+    <!-- ✏️ Edit Form -->
+   <!-- 📝 Modern Edit User Dialog -->
+<div *ngIf="showEditForm" class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-auto transform transition-all duration-300 ease-in-out"
+         [ngClass]="{'scale-100 opacity-100': showEditForm, 'scale-95 opacity-0': !showEditForm}">
+      <!-- Header -->
+      <div class="border-b px-6 py-4 flex items-center justify-between">
+        <h3 class="text-xl font-semibold text-gray-800">Edit User</h3>
+        <button (click)="cancelEdit()" class="text-gray-500 hover:text-gray-700 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Form content -->
+      <div class="p-6">
+        <div class="space-y-5">
+          <div>
+            <label for="name" class="text-sm font-medium text-gray-700 block mb-1">Full Name</label>
+            <input [(ngModel)]="editedUser.name" id="name" type="text" 
+                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" 
+                   placeholder="Enter full name" />
+          </div>
+          
+          <div>
+            <label for="email" class="text-sm font-medium text-gray-700 block mb-1">Email Address</label>
+            <input [(ngModel)]="editedUser.email" id="email" type="email" 
+                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" 
+                   placeholder="user@example.com" />
+          </div>
+          
+          <div>
+            <label for="phone" class="text-sm font-medium text-gray-700 block mb-1">Phone Number</label>
+            <input [(ngModel)]="editedUser.phone" id="phone" type="tel" 
+                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" 
+                   placeholder="+216" />
+          </div>
+          
+          <div>
+            <label for="birthday" class="text-sm font-medium text-gray-700 block mb-1">Date of Birth</label>
+            <input [(ngModel)]="editedUser.date" id="birthday" type="date" 
+                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" />
+          </div>
+          
+          <div>
+            <label for="status" class="text-sm font-medium text-gray-700 block mb-1">Account Status</label>
+            <div class="flex items-center gap-3 mt-1">
+              <select [(ngModel)]="editedUser.status" id="status" 
+                     class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                <option value="ACTIVE">Active</option>
+                <option value="BANNED">Banned</option>
+                
+              </select>
+            </div>
+          </div>
         </div>
+      </div>
+      
+      <!-- Actions footer -->
+      <div class="border-t px-6 py-4 bg-gray-50 rounded-b-2xl flex justify-end gap-3">
+        <button (click)="cancelEdit()" 
+                class="px-4 py-2 rounded-lg text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+          Cancel
+        </button>
+        <button (click)="saveChanges()" 
+                class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+          Save Changes
+        </button>
+      </div>
     </div>
+  </div>
 </div>

@@ -17,23 +17,59 @@ export class QuestionsManagementComponent implements OnInit {
   page: number = 0;
   pageSize: number = 5;
   totalPages: number = 0;
-
+  editedImageFile: File | null = null;
+  previewImageUrl: string | null = null;
+  
   constructor(private questionService: QuestionService) {}
 
   ngOnInit(): void {
     this.loadQuestions();
   }
 
+  onEditImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.editedImageFile = input.files[0];
+  
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImageUrl = reader.result as string;
+      };
+      reader.readAsDataURL(this.editedImageFile);
+    }
+  }
+  
   loadQuestions() {
     const headers = this.questionService.getHeaders();
     this.questionService.getAllQuestionsSorted(this.page, this.pageSize, headers).subscribe({
       next: (res) => {
         this.questions = res.questionDTOList;
         this.totalPages = res.totalPages;
+  
+        // Fetch image for each question
+        this.questions.forEach((q, index) => {
+          this.questionService.getImageByQuestionId(q.id).subscribe({
+            next: (blob) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                // Assign base64 string to imageUrl for display
+                this.questions[index].imageUrl = reader.result as string;
+                console.log(`✅ Image loaded for question ${q.id}`);
+              };
+              reader.readAsDataURL(blob);
+            },
+            error: () => {
+              console.warn(`⚠️ No image found for question ${q.id}`);
+            }
+          });
+        });
       },
-      error: (err) => console.error('❌ Failed to load questions:', err)
+      error: (err) => {
+        console.error('❌ Failed to load questions:', err);
+      }
     });
   }
+  
 
   deleteQuestion(id: number) {
     if (confirm(`❗ Are you sure you want to delete question ID ${id}?`)) {
@@ -53,20 +89,51 @@ export class QuestionsManagementComponent implements OnInit {
 
   submitEdit() {
     if (!this.editedQuestion.id) return;
+  
     this.questionService.updateQuestion(this.editedQuestion.id, this.editedQuestion).subscribe({
-      next: (updated) => {
-        const idx = this.questions.findIndex(q => q.id === updated.id);
-        if (idx !== -1) this.questions[idx] = updated;
-        this.closeModal();
+      next: (updatedQuestion) => {
+        if (this.editedImageFile) {
+          // ✅ Use the new imageService method to update the image
+          const formData = new FormData();
+          formData.append('multipartFile', this.editedImageFile);
+  
+          this.questionService.updateQuestionImage(formData, this.editedQuestion.id!).subscribe({
+            next: () => {
+              console.log('✅ Image updated via new imageService');
+              this.loadQuestions(); // Refresh to show new image
+              this.closeModal();
+              alert('✅ Question updated with new image!');
+            },
+            error: (err) => {
+              console.error('❌ Failed to update image:', err);
+              alert('Question updated, but image update failed.');
+              this.loadQuestions();
+              this.closeModal();
+            }
+          });
+  
+        } else {
+          this.loadQuestions();
+          this.closeModal();
+          alert('✅ Question updated successfully!');
+        }
       },
-      error: (err) => console.error('❌ Update failed:', err)
+      error: (err) => {
+        console.error('❌ Failed to update question:', err);
+        alert('Error while updating the question.');
+      }
     });
   }
+  
+  
 
   closeModal() {
     this.showEditModal = false;
     this.editedQuestion = {};
+    this.editedImageFile = null;
+    this.previewImageUrl = null;
   }
+  
 
   nextPage() {
     if (this.page < this.totalPages - 1) {

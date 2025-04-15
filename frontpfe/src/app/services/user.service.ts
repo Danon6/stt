@@ -79,13 +79,17 @@ export class UserService {
 
   banUser(userId: number) {
     return this.http.put(`http://localhost:8080/api/user/ban/${userId}`, {}, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
+      responseType: 'text' as 'json' 
+
     });
   }
   
   unbanUser(userId: number) {
     return this.http.put(`http://localhost:8080/api/user/unban/${userId}`, {}, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
+      responseType: 'text' as 'json' 
+
     });
   }
   

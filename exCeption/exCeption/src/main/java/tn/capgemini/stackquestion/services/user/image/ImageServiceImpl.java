@@ -54,4 +54,25 @@ public class ImageServiceImpl implements ImageService {
 
         imageRepository.save(image);
     }
+    @Override
+    public void updateQuestionImage(MultipartFile file, int questionId) throws IOException {
+        // Delete existing if needed
+        Image existing = imageRepository.findByQuestionId(questionId);
+        if (existing != null) {
+            imageRepository.delete(existing);
+        }
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("❌ Question not found with ID: " + questionId));
+
+        Image newImage = new Image();
+        newImage.setName(file.getOriginalFilename());
+        newImage.setType(file.getContentType());
+        newImage.setData(file.getBytes());
+        newImage.setQuestion(question);  // ✅ Set the full object here
+
+        imageRepository.save(newImage);
+
+    }
+
 }

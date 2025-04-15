@@ -1,22 +1,44 @@
 <app-navbar></app-navbar>
 
-<div class="admin-container">
-    <h1 class="title">Admin Dashboard</h1>
+<div class="flex min-h-screen bg-gray-100">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-md hidden md:block">
+    <div class="h-full p-6">
+      <h2 class="text-xl font-bold text-indigo-700 mb-6">⚙️ Admin Panel</h2>
 
-    <!-- Bouton User Management qui affiche ou masque la liste des utilisateurs -->
-    <nav class="admin-menu">
-        <button (click)="toggleUserManagement()" class="active">User Management</button>
-    </nav>
-    <nav class="admin-menu">
-        <button (click)="toggleQuestionsManagement()" class="active">Questions Management</button>
-    </nav>
-    <nav class="admin-menu">
-        <button (click)="toggleKnowledgesManagement()" class="active">Knowledges Management</button>
-    </nav>
+      <nav class="space-y-3">
+        <button 
+          (click)="showSection('users')" 
+          [ngClass]="getBtnClass(showUserManagement)" 
+          class="w-full text-left px-4 py-2 rounded hover:bg-indigo-100 transition"
+        >
+          👥 User Management
+        </button>
 
-    <!-- Affichage conditionnel de User Management -->
+        <button 
+          (click)="showSection('questions')" 
+          [ngClass]="getBtnClass(showQuestionsManagement)" 
+          class="w-full text-left px-4 py-2 rounded hover:bg-indigo-100 transition"
+        >
+          ❓ Questions Management
+        </button>
+
+        <button 
+          (click)="showSection('knowledge')" 
+          [ngClass]="getBtnClass(showKnowledgesManagement)" 
+          class="w-full text-left px-4 py-2 rounded hover:bg-indigo-100 transition"
+        >
+          🧠 Knowledge Management
+        </button>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    
     <app-user-management *ngIf="showUserManagement"></app-user-management>
     <app-questions-management *ngIf="showQuestionsManagement"></app-questions-management>
     <app-knowledges-management *ngIf="showKnowledgesManagement"></app-knowledges-management>
-
+  </main>
 </div>

@@ -39,7 +39,7 @@ export class UserManagementComponent implements OnInit {
           name: user.name,        // Assurez-vous que 'name' est bien défini
           email: user.email,      // Vérifiez 'email'
           phone: user.phone || '',// Vérifiez 'phone'
-          dateNaissance: user.dateNaissance || '', // Vérifiez 'dateNaissance'
+          date: user.date || '', // Vérifiez 'date'
           typeUser: user.typeUser, 
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
@@ -62,7 +62,7 @@ export class UserManagementComponent implements OnInit {
       user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       user.phone.includes(this.searchTerm) ||
-      user.dateNaissance.includes(this.searchTerm) ||
+      user.date.includes(this.searchTerm) ||
       user.updatedAt.includes(this.searchTerm)
       
     );
@@ -86,17 +86,17 @@ export class UserManagementComponent implements OnInit {
   
 
   deleteUser(userId: number) {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ID ${userId} ?`)) {
+    if (confirm(`Êtes-vous sûr de vouloir bloquer l'utilisateur ID ${userId} ?`)) {
       this.authService.deleteUser(userId).subscribe(
         (response) => {
-          console.log("✅ Suppression réussie :", response);
-          alert("Utilisateur supprimé avec succès !");
+          // console.log("✅ Suppression réussie :", response);
+          alert("Utilisateur bloqué avec succès !");
           this.users = this.users.filter(user => user.userId !== userId);
           this.filteredUsers = [...this.users]; // ✅ Mise à jour de la liste affichée
         },
         (error) => {
-          console.error("❌ Erreur lors de la suppression :", error);
-          alert("⚠ Erreur lors de la suppression de l'utilisateur !");
+          // console.error("❌ Erreur lors de la suppression :", error);
+          alert("⚠ Erreur lors du blocage de l'utilisateur !");
         }
       );
     }

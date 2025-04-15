@@ -61,7 +61,8 @@ export class MainComponent implements OnInit {
     tags: [],
     userId: 0,
     departement: '',
-    projet: ''
+    projet: '',
+    updatedAt: ''
   };
 
   validateForm!: FormGroup;
@@ -424,14 +425,21 @@ export class MainComponent implements OnInit {
           name: '',
           createdDate: '',
           departement: '',
-          projet: ''
+          projet: '',
+          updatedAt: ''
         };
         this.validateForm.reset();
       },
       error: (err) => {
-        console.error('❌ Failed to save question:', err);
+        if (err.status === 403) {
+          alert('⚠️ Your account is inactive. You cannot post questions.');
+        } else {
+          console.error('❌ Failed to save question:', err);
+          alert('An error occurred while posting the question.');
+        }
         this.isSubmitting = false;
       }
+      
     });
   }
 
@@ -470,8 +478,14 @@ export class MainComponent implements OnInit {
         this.loadAnswerVotes(res.id!);
       },
       error: (err) => {
-        console.error('❌ Failed to post answer:', err);
+        if (err.status === 403) {
+          alert('⚠️ Your account is inactive. You cannot post answers.');
+        } else {
+          console.error('❌ Failed to post answer:', err);
+          alert('Failed to submit answer.');
+        }
       }
+      
     });
   }
 
@@ -692,8 +706,14 @@ export class MainComponent implements OnInit {
           this.knowledgeForm.reset();
         },
         error: (err) => {
-          console.error('❌ Failed to post knowledge:', err);
+          if (err.status === 403) {
+            alert('⚠️ Your account is inactive. You cannot post knowledge.');
+          } else {
+            console.error('❌ Failed to post knowledge:', err);
+            alert('An error occurred while posting knowledge.');
+          }
         }
+        
       });
     });
   }
@@ -724,8 +744,15 @@ export class MainComponent implements OnInit {
   
     this.questionService.voteKnowledge(payload).subscribe({
       next: () => this.loadVoteForKnowledge(knowledgeId),
-      error: (err) => console.error('❌ Voting on knowledge failed', err)
-    });
+      error: (err) => {
+        if (err.status === 403) {
+          alert('⚠️ Your account is inactive. You cannot vote on knowledge.');
+        } else {
+          console.error('❌ Voting on knowledge failed', err);
+          alert('Failed to vote on knowledge.');
+        }
+      }
+          });
   }
   
   loadVoteForKnowledge(knowledgeId: number) {

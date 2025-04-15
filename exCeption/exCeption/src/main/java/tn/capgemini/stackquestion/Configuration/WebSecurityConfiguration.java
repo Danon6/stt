@@ -43,6 +43,9 @@ public class WebSecurityConfiguration {
                         .requestMatchers("/api/questions/**").permitAll()
                         .requestMatchers("/api/delete/**").permitAll()
                         .requestMatchers("api/user/**").permitAll()
+                        .requestMatchers("/api/image/question/**").permitAll()
+                        .requestMatchers("/api/image/question/ *").permitAll()
+
 
                         .anyRequest().authenticated()
 

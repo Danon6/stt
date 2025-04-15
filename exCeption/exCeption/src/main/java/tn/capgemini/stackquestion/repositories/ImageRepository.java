@@ -16,6 +16,7 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     // ✅ New method for fetching image by question ID
     Image findByQuestionId(int questionId);
+    Image findByQuestion_Id(Integer questionId);
 
 
 }

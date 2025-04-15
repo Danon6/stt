@@ -1,134 +1,191 @@
 <app-main-navbar></app-main-navbar>
 
-<div class="layout">
-  <!-- Sidebar Section -->
-  <aside class="sidebar">
-    <nav>
-      <!-- Top Menu -->
-      <ul class="top-menu">
-        <li>
-          <a routerLink="/main" class="highlight flex items-center">
-            <span class="icon material-icons">Home</span>
-            <img src="home-button.png" alt="Home" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a routerLink="/trending" class="highlight flex items-center">
-            <span class="icon material-icons">Trending_up</span>
-            <img src="up-arrow.png" alt="Trending Up" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        
-      </ul>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider" />
-
-      <!-- Bottom Menu -->
-      <ul class="bottom-menu">
-        <li>
-          <a  (click)="onQuestionsClick()">
-            <span class="icon material-icons">Questions</span>
-            <img src="inquiry.png" alt="Questions" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        <li>
-          <a  (click)="onUsersClick()">
-            <span class="icon material-icons">Users</span>
-            <img src="inquiry.png" alt="Users" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        
-        <li>
-          <a href="#" class="highlight flex items-center">
-            <span class="icon material-icons">Companies</span>
-            <img src="building.png" alt="Companies" class="h-10 w-10 rounded-full animate-fadeIn mr-2">
-          </a>
-        </li>
-        
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- Main Content Section -->
-  <main class="content">
-    <!-- Title and Description Section -->
-    <div class="text-center mb-4">
-      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-900 mb-3">
-         Most Upvoted Questions Coming Here ! 📈
-      </h2>
-    </div>
-    
-
-    <!-- Questions Section -->
-    <div *ngIf="questions.length > 0; else noQuestions">
-      <div *ngFor="let question of questions" class="question-item mb-4 p-4 border rounded-lg shadow bg-blue-50">
-        
-        <!-- Question Title and Body -->
-        <h3 class="text-lg font-semibold text-blue-900">{{ question.title }}</h3>
-        <p class="text-gray-800 mb-2">{{ question.body }}</p>
-
-        <!-- Upvote, Downvote, and Score Section -->
-        <div class="flex items-center space-x-3 text-sm mb-4">
-          
-          <!-- Upvote -->
-          <div class="flex items-center">
-            <span class="bg-green-500 text-white py-1 px-3 rounded-full text-sm font-medium hover:bg-green-600 transition">
-              Upvotes: {{ question.upvotes || 0 }}
-            </span>
-          </div>
-
-          <!-- Professional Separator (•) -->
-          <span class="text-gray-500">•</span>
-
-          <!-- Downvote -->
-          <div class="flex items-center">
-            <span class="bg-red-500 text-white py-1 px-3 rounded-full text-sm font-medium hover:bg-red-600 transition">
-              Downvotes: {{ question.downvotes || 0 }}
-            </span>
-          </div>
-
-          <!-- Professional Separator (•) -->
-          <span class="text-gray-500">•</span>
-
-          <!-- Score -->
-          <div class="flex items-center">
-            <span class="bg-blue-600 text-white py-1 px-3 rounded-full text-sm font-medium">
-              Score: {{ question.score || 0 }}
-            </span>
-          </div>
-        </div>
-
-        <!-- Image Section with Fallback -->
-        <div *ngIf="question.imageUrl" class="mt-2 mb-4">
-          <img 
-            [src]="question.imageUrl" 
-            alt="Question Image" 
-            class="rounded shadow max-w-xs cursor-pointer hover:opacity-80 transition" 
-            (click)="openImageModal(question.imageUrl!)" 
-            (error)="question.imageUrl = 'path_to_fallback_image.jpg'" /> <!-- Fallback image on error -->
-        </div>
-
-        <!-- Tags Section -->
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span *ngFor="let tag of question.tags" 
-                class="bg-blue-300 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full hover:bg-blue-400 transition duration-200">
-            {{ tag }}
-          </span>
-        </div>
-
+<div class="bg-gray-100 min-h-screen dark:bg-gray-900">
+  <div class="container mx-auto flex max-w-6xl">
+    <!-- Sidebar Section -->
+    <aside class="sticky top-0 h-screen w-16 md:w-64 pt-5 hidden md:block">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-4">
+        <h2 class="font-medium text-gray-700 dark:text-gray-300 mb-2 hidden md:block">Feeds</h2>
+        <nav>
+          <!-- Top Menu -->
+          <ul class="space-y-2">
+            <li>
+              <a routerLink="/main" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3" />
+                </svg>
+                <span class="hidden md:inline">Home</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/trending" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors bg-gray-100 dark:bg-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                <span class="hidden md:inline font-medium">Trending</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
-    </div>
-    <div class="mt-6 flex gap-4 justify-center items-center">
-      <button (click)="loadQuestions(pageNumber - 1)" [disabled]="pageNumber === 0" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded">Previous</button>
-      <span class="font-medium text-gray-700">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
-      <button (click)="loadQuestions(pageNumber + 1)" [disabled]="pageNumber >= totalPages - 1" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded">Next</button>
-    </div>
 
-    <!-- No Questions Message -->
-    <ng-template #noQuestions>
-      <p class="text-gray-500">No trending questions at the moment.</p>
-    </ng-template>
-  </main>
+      <!-- Explore Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+        <h2 class="font-medium text-gray-700 dark:text-gray-300 mb-2 hidden md:block">Explore</h2>
+        <nav>
+          <ul class="space-y-2">
+            <li>
+              <a (click)="onQuestionsClick()" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="hidden md:inline">Questions</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="onUsersClick()" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span class="hidden md:inline">Users</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <span class="hidden md:inline">Companies</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
 
+    <!-- Main Content Section -->
+    <main class="flex-1 p-4">
+      <!-- Title and Description Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          Trending Questions
+        </h2>
+      </div>
+      
+      <!-- Questions Section -->
+      <div *ngIf="questions.length > 0; else noQuestions">
+        <div *ngFor="let question of questions" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm mb-4 overflow-hidden">
+          <!-- Vote Controls (Left Side) -->
+          <div class="flex">
+            <div class="flex flex-col items-center justify-start p-2 bg-gray-50 dark:bg-gray-700 w-12">
+              <!-- Upvote Button -->
+              <button class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                </svg>
+              </button>
+              
+              <!-- Score -->
+              <span class="font-bold text-gray-800 dark:text-gray-200 my-1">{{ question.score || 0 }}</span>
+              
+              <!-- Downvote Button -->
+              <button class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Post Content (Right Side) -->
+            <div class="flex-1 p-4">
+              <!-- Question Title and Body -->
+              <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{{ question.title }}</h3>
+              <p class="text-gray-700 dark:text-gray-300 mb-3">{{ question.body }}</p>
+              
+              <!-- Image Section with Fallback -->
+              <div *ngIf="question.imageUrl" class="mb-3">
+                <img 
+                  [src]="question.imageUrl" 
+                  alt="Question Image" 
+                  class="rounded-md max-w-full cursor-pointer hover:opacity-90 transition-opacity" 
+                  (click)="openImageModal(question.imageUrl!)" 
+                  (error)="question.imageUrl = 'path_to_fallback_image.jpg'" />
+              </div>
+              
+              <!-- Tags Section -->
+              <div class="flex flex-wrap gap-2 mb-2">
+                <span *ngFor="let tag of question.tags" 
+                      class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                  {{ tag }}
+                </span>
+              </div>
+              
+              <!-- Post Meta -->
+              <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-2">
+                <div class="flex items-center mr-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                  <span>{{ question.comments?.length || 0 }} comments</span>
+                </div>
+                <div class="flex items-center mr-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>Posted 2h ago</span>
+                </div>
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  </svg>
+                  <span>Save</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-center mt-6">
+        <nav class="inline-flex rounded-md shadow-sm -space-x-px bg-white dark:bg-gray-800">
+          <button 
+            (click)="loadQuestions(pageNumber - 1)" 
+            [disabled]="pageNumber === 0" 
+            class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <button 
+            class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
+            Page {{ pageNumber + 1 }} of {{ totalPages }}
+          </button>
+          <button 
+            (click)="loadQuestions(pageNumber + 1)" 
+            [disabled]="pageNumber >= totalPages - 1" 
+            class="relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </nav>
+      </div>
+
+      <!-- No Questions Message -->
+      <ng-template #noQuestions>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-gray-500 dark:text-gray-400 mt-4">No trending questions at the moment.</p>
+          <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+            Ask a Question
+          </button>
+        </div>
+      </ng-template>
+    </main>
+  </div>
 </div>

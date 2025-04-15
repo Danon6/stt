@@ -257,11 +257,8 @@ public class QuestionServiceImpl implements  QuestionService{
             throw new RuntimeException("User not found");
         }
 
-        Question question = optionalQuestion.get();
 
-        if (!question.getUser().getUser_id().equals(userId)) {
-            throw new RuntimeException("⚠️ You are not allowed to delete this question.");
-        }
+
 
         questionRepository.deleteById(questionId);
     }

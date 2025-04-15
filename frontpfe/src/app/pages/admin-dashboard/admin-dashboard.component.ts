@@ -14,19 +14,20 @@ import { KnowledgesManagementComponent } from './knowledges-management/knowledge
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent {
-  showUserManagement = false; // Caché par défaut
+  showUserManagement = true;
   showQuestionsManagement = false;
   showKnowledgesManagement = false;
-  toggleUserManagement() {
-    this.showUserManagement = !this.showUserManagement; // Change l'état à chaque clic
-    console.log('toggleUserManagement appelé. showUserManagement:', this.showUserManagement); // Log l'état de showUserManagement
+
+  showSection(section: 'users' | 'questions' | 'knowledge') {
+    this.showUserManagement = section === 'users';
+    this.showQuestionsManagement = section === 'questions';
+    this.showKnowledgesManagement = section === 'knowledge';
   }
-  toggleQuestionsManagement() {
-    this.showQuestionsManagement = !this.showQuestionsManagement; // Change l'état à chaque clic
-    console.log('togglQuestionsManagement appelé. showQuestionsManagement:', this.showQuestionsManagement); // Log l'état de showUserManagement
-  }
-  toggleKnowledgesManagement() {
-    this.showKnowledgesManagement = !this.showKnowledgesManagement; // Change l'état à chaque clic
-    console.log('toggleKnowledgesManagement appelé. showKnowledgesManagement:', this.showKnowledgesManagement); // Log l'état de showUserManagement
+
+  getBtnClass(active: boolean): string {
+    return active
+      ? 'bg-indigo-600 text-white font-semibold'
+      : 'text-gray-700 bg-gray-100';
   }
 }
+

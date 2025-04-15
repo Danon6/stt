@@ -20,6 +20,7 @@ export interface QuestionDTO {
   voteCount?: number;
   departement?: string;
   projet?: string;
+  updatedAt: string;
 }
 
 export interface AllQuestionResponseDto {
@@ -51,6 +52,10 @@ export interface QuestionVoteStats {
   providedIn: 'root'
 })
 export class QuestionService {
+  updateQuestionImage(formData: FormData, questionId: number): Observable<any> {
+    return this.http.post(`${API_URL}/image/question/update/${questionId}`, formData);
+  }
+  
   getAllKnowledges() {
     return this.http.get<any[]>(`${API_URL}/knowledge`);
   }
@@ -81,11 +86,11 @@ export class QuestionService {
     const formData = new FormData();
     formData.append('multipartFile', file);
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authService.getAuthToken() || ''}`
-    });
+    // const headers = new HttpHeaders({
+    //   Authorization: `Bearer ${this.authService.getAuthToken() || ''}`
+    // });
 
-    return this.http.post(url, formData, { headers }).pipe(
+    return this.http.post(url, formData).pipe(
       catchError(err => {
         console.error('❌ Error uploading image:', err);
         return throwError(() => new Error('Image upload failed'));
